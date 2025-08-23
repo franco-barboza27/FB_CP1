@@ -4,25 +4,44 @@
 # get the user's age
 # get their favorite color
 
-# save info and if the username repeats, don't ask the questions again but instead just print the finished sentence
+# save info and if the username repeats, don't ask the questions again but instead just print the finished sentence output it in one complete sentence
+# make a dictionary with every name input as a key and the key having color and age as the info
 
-# output it in one complete sentence
-
-print("Hello user, this is a database kind of project.")
+print("\n \nHello user, this is a database kind of project.")
 print("Your information will be saved until you terminate the program.")
+print("Enter 0 as Name if you want to exit")
 print("We will now begin.")
 
 
 
 def whoAreThey():
 
-    continue_forever = True
+    old_users_list = []
 
-    old_users = []
+    while True:
 
-    while continue_forever == True:
-        name = input("What is your name?\n")
-    age = input("How old are you?\n")
-    fav_color = input("What is your favorite color?\n")
+        check = False
 
-    final_sentence = print(f"{name} is {age} and their favorite color is {fav_color}")
+        name = input("\n\nWhat is your name?\n")
+
+        if name == "0":
+            break
+
+        for user in old_users_list:
+            if name == user["name"]:
+                print("\nOh! that's a re-occuring user!")
+                check = True
+                user_dict = user
+
+        if check == False:
+            age = input("\nHow old are you?\n")
+            fav_color = input("\nWhat is your favorite color?\n")
+            user_dict = {
+                "name": name, 
+                "age": age, 
+                "fav_color": fav_color
+                }
+            old_users_list.append(user_dict)
+        
+        final_sentence = print(f"\n{name} is {user_dict["age"]} and their favorite color is {user_dict["fav_color"]}")
+whoAreThey()

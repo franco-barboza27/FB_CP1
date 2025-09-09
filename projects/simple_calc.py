@@ -16,18 +16,18 @@ while True:
     operation = input("What is the operation you would like to do?\nAddition (+) subtraction (-) multiplication (*) division (/) integer division (//) and modulo division (%) and exponents (**): \n")
 
     if operation == "+":
-        print(f"{frst_num} + {scnd_num} = {frst_num + scnd_num}")
+        print(f"{frst_num} + {scnd_num} = {frst_num + scnd_num:.2f}")
     elif operation == "-":
-        print(f"{frst_num} - {scnd_num} = {frst_num - scnd_num}")
+        print(f"{frst_num} - {scnd_num} = {frst_num - scnd_num:.2f}")
     elif operation == "*":
-        print(f"{frst_num} * {scnd_num} = {frst_num * scnd_num}")
+        print(f"{frst_num} * {scnd_num} = {frst_num * scnd_num:.2f}")
     elif operation == "/":
-        print(f"{frst_num} / {scnd_num} = {frst_num / scnd_num}")
+        print(f"{frst_num} / {scnd_num} = {frst_num / scnd_num:.2f}")
     elif operation == "//":
-        print(f"{frst_num} // {scnd_num} = {frst_num // scnd_num}")
+        print(f"{frst_num} // {scnd_num} = {frst_num // scnd_num:.2f}")
     elif operation == "%":
-        print(f"{frst_num} % {scnd_num} = {frst_num % scnd_num}")
+        print(f"{frst_num} % {scnd_num} = {frst_num % scnd_num:.2f}")
     elif operation == "**":
-        print(f"{frst_num} ** {scnd_num} = {frst_num ** scnd_num}")
+        print(f"{frst_num} ** {scnd_num} = {frst_num ** scnd_num:.2f}")
     else:
         print("I'm sorry, your operation input did NOT match the required format, please repeat.")

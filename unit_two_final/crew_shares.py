@@ -1,10 +1,9 @@
 # FB 1st crew shares project
 
-# make a variable for the captain, the 1st mate and the crew mate's share amounts
-# make a variable for the total money
+# make a variable for the total money CHECK
 # make a story CHECK
-# make a variable for the total money divided by the total shares
-# make a variable for the total money given to the captain, the first mate and the crewmates
+# make a variable for the leftover money divided by the total shares CHECK
+# make a variable for the total money given to the captain, the first mate and the crewmates CHECK
 
 print("This is a mini story about pirates who get money, also sorry about your story teller this time.\nThis one has amnesia or something.")
 
@@ -15,7 +14,7 @@ while True:
 
     inp_count = 0
 
-    crew_mates = int(input("How many crew mates are there, not including the first mate and captain? It's a little bit fuzzy for me... \n"))
+    crew_mates = int(input("How many crew mates are there, not including the first mate and captain? It's a little bit fuzzy for me... \nEnter Answer: \n"))
 
     tot_money = 0
     min_money = crew_mates * 500 + 10 + crew_mates
@@ -23,7 +22,7 @@ while True:
 
     while True:
         if inp_count == 0:
-            tot_money = float(input("How much money did they make again???? I forgot:\n"))
+            tot_money = float(input("How much money did they make again???? I forgot. \nEnter Answer: \n"))
             inp_count += 1
         elif tot_money >= min_money:
             print(f"Oh that's right, they had {tot_money:.2f}")
@@ -31,7 +30,7 @@ while True:
             break
         else:
             print("Sorry, but that doesn't sound quite about right... I think it might be a bit more...")
-            tot_money = float(input("How much money did they ACTUALLY make?:\n"))
+            tot_money = float(input("How much money did they ACTUALLY make? \nEnter Answer: \n"))
 
     crew_start = 500 * crew_mates
     leftover = tot_money - crew_start

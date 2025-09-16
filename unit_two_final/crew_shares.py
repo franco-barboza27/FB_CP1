@@ -34,19 +34,16 @@ while True:
             tot_money = float(input("How much money did they ACTUALLY make?:\n"))
 
     crew_start = 500 * crew_mates
-
     leftover = tot_money - crew_start
 
-    share = leftover / crew_mates + 10
+    share = leftover / (crew_mates + 10)
 
     capt_mon = share * 7
-
     frst_mon = share * 3
-
     crew_mon = share * crew_mates + crew_start
 
-    print(f"One share for the crew was {share:.2f}$")
-    print(f"This meant that the captain got {capt_mon:.2f}$ and the first mate got {frst_mon:.2f}$")
-    print(f"Each crewmate got one share and 500 dollars for a total of {crew_mon}$")
+    print(f"One share for the crew was something like... {share:.2f}$?")
+    print(f"So the captain got {capt_mon:.2f}$ and the first mate got {frst_mon:.2f}$")
+    print(f"Each crewmate got one share and 500 dollars for a total of... let me do the math... {crew_mon}$")
 
 

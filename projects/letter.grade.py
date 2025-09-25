@@ -1,4 +1,4 @@
-# FB 1st letter grade
+# FB 1st What is My Grade
 
 print("Hello this is a letter grade calculator")
 
@@ -16,7 +16,7 @@ while True:
         print("Ok, moving on.")
 
     while True:
-        cur_class = input("What class do you want to calculate for?")
+        cur_class = input("What class do you want to calculate for?:\n")
 
         if cur_class == "STOP":
             print("Ok bye")
@@ -54,3 +54,9 @@ while True:
             print("Your inputted a letter or something. I LITERALLY told you what I wanted... TSK TSK... wait that's actually impossible because if you input something that's not a number it gives you an error instead.")
 
             grade_storage.update({cur_class : grade})
+        
+        cur_grade_total = sum(grade_storage.values())
+
+        grade_avg = cur_grade_total / (len(grade_storage) + 1)
+
+        print(f"Your current average grade is {grade_avg}%")

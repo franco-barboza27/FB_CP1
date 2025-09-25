@@ -1,48 +1,56 @@
 # FB 1st letter grade
 
-#make
-
 print("Hello this is a letter grade calculator")
 
 grade_storage = {}
+stop = True
 
-while stop:
+while True:
 
-    stop_check = input("Input STOP to STOP the program.")
-    stop = True
+    stop_check = input("Input STOP to STOP the program.:\n")
 
     if stop_check == "STOP":
-        print("Oh... ok. Goodbye!")
-        stop = False
+        "Bye"
+        exit
     else:
         print("Ok, moving on.")
 
-    while stop:
-        grade = float(input("What is your grade in one of your classes (input as a decimal)?:\n"))
+    while True:
+        cur_class = input("What class do you want to calculate for?")
+
+        if cur_class == "STOP":
+            print("Ok bye")
+            exit
+        else:
+            print("Thanks.")
+
+        grade = float(input(f"What is your grade in {cur_class} (input as #.#)?:\n"))
 
         if grade >= 93:
             print("Your grade is an A. Exceeding most expectations.")
-        elif grade >= 90 and grade <= 92.99:
+        elif grade >= 90:
             print("Your grade is an A-")
-        elif grade >= 87 and grade <= 89.99:
+        elif grade >= 87:
             print("Your grade is a B+. Definitely above average.")
-        elif grade >= 83 and grade <= 86.99:
+        elif grade >= 83:
             print("Your grade is an B")
-        elif grade >= 80 and grade <= 82.99:
+        elif grade >= 80:
             print("Your grade is a B-. Above average... ish")
-        elif grade >= 77 and grade <= 79.99:
+        elif grade >= 77:
             print("Your grade is an C+. A teeny bit above average.")
-        elif grade >= 73 and grade <= 76.99:
+        elif grade >= 73:
             print("Your grade is a C")
-        elif grade >= 70 and grade <= 72.99:
+        elif grade >= 70:
             print("Your grade is a C-")
-        elif grade >= 67 and grade <= 69.99:
+        elif grade >= 67:
             print("Your grade is an D+. You are below average, in general.")
-        elif grade >= 63 and grade <= 66.99:
+        elif grade >= 63:
             print("Your grade is a D. You are even more below average than a D+.")
-        elif grade >= 60 and grade <= 62.99:
+        elif grade >= 60:
             print("Your grade is an D-. Wow... why is your grade so low?????")
         elif grade <= 59.99:
-            print("Your grade IS AN F. Do better I SWEAR I'll send you to the factories of the great depression if you don't bring those grades up by next semester!")
+            print("Your grade IS AN F. Do better or I SWEAR I'll send you to the factories of the great depression if you don't bring those grades up by next semester!")
         else:
-            print("Your grade is somehow in the inbetween that my if statements didn't cover.")
+            print("Your inputted a letter or something. I LITERALLY told you what I wanted... TSK TSK... wait that's actually impossible because if you input something that's not a number it gives you an error instead.")
+
+            grade_storage.update({cur_class : grade})

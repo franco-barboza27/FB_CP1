@@ -11,7 +11,7 @@ while True:
 
     if stop_check == "STOP":
         "Bye"
-        exit
+        exit()
     else:
         print("Ok, moving on.")
 
@@ -20,7 +20,7 @@ while True:
 
         if cur_class == "STOP":
             print("Ok bye")
-            exit
+            exit()
         else:
             print("Thanks.")
 
@@ -53,10 +53,10 @@ while True:
         else:
             print("Your inputted a letter or something. I LITERALLY told you what I wanted... TSK TSK... wait that's actually impossible because if you input something that's not a number it gives you an error instead.")
 
-            grade_storage.update({cur_class : grade})
-        
+        grade_storage.update({cur_class : grade})
+
         cur_grade_total = sum(grade_storage.values())
 
-        grade_avg = cur_grade_total / (len(grade_storage) + 1)
+        grade_avg = cur_grade_total / len(grade_storage)
 
-        print(f"Your current average grade is {grade_avg}%")
+        print(f"Your current average grade is {grade_avg:.2f}%")

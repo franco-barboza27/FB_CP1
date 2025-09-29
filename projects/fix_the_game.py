@@ -4,7 +4,7 @@ def start_game():
     print("I'm thinking of a number between 1 and 100.")
     number_to_guess = random.randint(1, 100)
     max_attempts = 10
-    attempts = 0
+    attempts = 1
     game_over = False
     while not game_over:
 
@@ -13,10 +13,10 @@ def start_game():
 
         if guess > 100:
 
-            "Hey! That number is bigger than 100."
+            print("Hey! That number is bigger than 100.")
         elif guess < 1:
 
-            "Hey! That number is smaller than 1!"
+            print("Hey! That number is smaller than 1!")
         elif attempts >= max_attempts:
 
             print(f"Sorry, you've used all {max_attempts} attempts. The number was {number_to_guess}.")

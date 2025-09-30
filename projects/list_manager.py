@@ -36,6 +36,16 @@ while True:
         else:
             print("The item doesn't seem to exist in your list. Are you sure you typed it correctly?")
     elif action == "4":
-            pass
+            print("Ok, what item do you want to re-add to your list?")
+            b_item = input("Enter:")
+
+            if b_item in bought_list:
+                bought_list.remove(b_item)
+                bought_list.append(b_item)
+            else:
+                print("The item doesn't seem to exist in your checked item list. Are you sure you typed it correctly?")
+    elif action == "5":
+        for i in enumerate(shop_list)
+            print()
     else:
         print("That did NOT match the format :^(")

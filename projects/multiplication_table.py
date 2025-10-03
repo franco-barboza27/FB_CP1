@@ -19,9 +19,9 @@ tall_size = 0
 while True:
     size = int(input("How big do you want your multiplication table to be?:"))
     
-    while len(len_table) < size:
+    for num in len_table:
         len_size += 1
         len_table.append(len_size)
 
         for mult in len_table:
-            #multi_table.append(len_size * )
+            multi_table.append(len_size * num)

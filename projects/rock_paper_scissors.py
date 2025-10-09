@@ -1,89 +1,33 @@
 # FB rock paper scissors, advanced
+
 import random as rand
-
-
-rock_ref = """
-            _____
-          /X X   |
-         /___    |
-           _/     \\
-          |--     |
-          |       \\
-          |________\\
-"""
-
-paper_ref = """
-           ________
-          |--------|
-          |--------|
-          |--------|
-          |--------|
-          |--------|
-          ╵────────╵
-"""
-
-scissors_ref = """
-                 | 
-             /|  |  |\\
-            | |  |  | |
-            | |  |  | |
-            | \\  |  / |
-           /   / | \\   \\
-           \\___\\ | /___/
-           //  | | |  \\\\
-          ||   | | |   ||
-          \\\\___| | |___//
-           \\____ | ____/
-                 |
-"""
-vs_ref = """
-             __          __       _________
-            | |         | |      |    _____|
-            \\ \\        / /       |   |____
-             \\ \\      / /        |____    |
-              \\ \\    / /          ____|   |
-               \\ \\__/ /    __    |        |    __
-               ╵──────╵   |__|   ╵────────╵   |__|
-"""
-
-you_win = """
-__     __          __          _______ _   _ _ 
-\ \   / /          \ \        / /_   _| \ | | |
- \ \_/ /__  _   _   \ \  /\  / /  | | |  \| | |
-  \   / _ \| | | |   \ \/  \/ /   | | | . ` | |
-   | | (_) | |_| |    \  /\  /   _| |_| |\  |_|
-   |_|\___/ \__,_|     \/  \/   |_____|_| \_(_)
-"""
-
-you_lose = """
- __     __           _      ____   _____ ______ _ 
- \ \   / /          | |    / __ \ / ____|  ____| |
-  \ \_/ /__  _   _  | |   | |  | | (___ | |__  | |
-   \   / _ \| | | | | |   | |  | |\___ \|  __| | |
-    | | (_) | |_| | | |___| |__| |____) | |____|_|
-    |_|\___/ \__,_| |______\____/|_____/|______(_)
-"""
-print(you_win)
-print(you_lose)
-
+import time as t
 
 newline_workaround = { 
-"moai_thing" : ["\n", "\n", "\n", "\n", "            _____", "\n          /- -   |", "\n         /___    |", "\n           _/     \\", "\n          |--     |", "\n          |       \\", "\n          |________\\"], 
-"paper_parts" : ["\n", "\n", "\n", "\n", "________", "\n          |--------|", "\n          |--------|", "\n          |--------|", "\n          |--------|", "\n          |--------|", "\n          ╵────────╵"],
-"scissor_parts" : ["/|  |\\", "\n          | |  | |", "\n          | |  | |", "\n           | \\  / |", "\n          /   /\\   \\", "\n           \\___\\/___/", "\n           //  ||  \\\\", "\          ||   ||   ||", "\n          \\\\___||___//", "\n           \\________/"],
+"moai_thing" : ["                    ", "                    ", "                    ", "                    ", "                    ", "            _____   ", "          /- -   |  ", "         /___    |  ", "           _/     \\ ", "          |--     | ", "          |       \\ ", "          |________\\"],
 
-"dead_moai" : ["            _____", "\n          /X X   |", "\n         /___    |", "\n           _/     \\", "\n          | 0     |", "\n          |       \\", "\n          |________\\"],
-"dead_paper" : ["____//____", "\n          |----\\\\----|", "\n          |----//----|", "\n          |----\\\\----|", "\n          |----//----|", "\n          |----\\\\----|", "\n          ╵────//────╵"],
-"dead_scissors" : ["                 |", "             /|  |  |\\", "            | |  |  | |", "            | |  |  | |", "            | \\  |  / |", "           /   / | \\   \\", "           \\___\\ | /___/", "           //  | | |  \\\\", "          ||   | | |   ||", "          \\\\___| | |___//", "           \\____ | ____/", "                 |"],
+"paper_parts" : ["                    ", "                    ", "                    ", "                    ", "                    ", "           ________ ", "          |--------|", "          |--------|", "          |--------|", "          |--------|", "          |--------|", "          ╵────────╵"],
 
-"you_lose" : [" __     __           _      ____   _____ ______ _ ", " \ \   / /          | |    / __ \ / ____|  ____| |", "  \ \_/ /__  _   _  | |   | |  | | (___ | |__  | |", "   \   / _ \| | | | | |   | |  | |\___ \|  __| | |", "    | | (_) | |_| | | |___| |__| |____) | |____|_|", "    |_|\___/ \__,_| |______\____/|_____/|______(_)"],
-"you_win" : [" __     __          __          _______ _   _ _ ", " \ \   / /          \ \        / /_   _| \ | | |", "  \ \_/ /__  _   _   \ \  /\  / /  | | |  \| | |", "   \   / _ \| | | |   \ \/  \/ /   | | | . ` | |", "    | | (_) | |_| |    \  /\  /   _| |_| |\  |_|", "    |_|\___/ \__,_|     \/  \/   |_____|_| \_(_)"]
+"scissor_parts" : ["                       ", "                       ", "             /|  |\\    ", "            | |  | |   ", "            | |  | |   ", "            | \\  / |   ", "           /   /\\   \\  ", "           \\___\\/___/  ", "           //  ||  \\\\  ", "          ||   ||   || ", "          \\\\___||___// ", "           \\________/  "],
+
+
+"dead_moai" : ["                    ", "                    ", "                    ", "                    ", "                    ", "            _____   ", "          /X X   |  ", "         /___    |  ", "           _/     \\ ", "          | 0     | ", "          |       \\ ", "          |________\\"],
+
+"dead_paper" : ["                      ", "                      ", "                      ", "                      ", "                      ", "           ____//____ ", "          |----\\\\----|", "          |----//----|", "          |----\\\\----|", "          |----//----|", "          |----\\\\----|", "          ╵────//────╵"],
+
+"dead_scissors" : ["                 |       ", "             /|  |  |\\   ", "            | |  |  | |  ", "            | |  |  | |  ", "            | \\  |  / |  ", "           /   / | \\   \\ ", "           \\___\\ | /___/ ", "           //  | | |  \\\\ ", "          ||   | | |   ||", "          \\\\___| | |___//", "           \\____ | ____/ ", "                 |       "],
+
+"v.s." : ["                                               ", "                                               ", "                                               ", "                                               ", "                                               ", "          __          __       _________       ", "         | |         | |      |    _____|      ", "         \\ \\        / /       |   |____        ", "          \\ \\      / /        |____    |       ", "           \\ \\    / /          ____|   |       ", "            \\ \\__/ /    __    |        |    __ ", "            ╵──────╵   |__|   ╵────────╵   |__|"],
+
+"you_lose" : ["                                                  ", "                                                  ", "                                                  ", "                                                  ", "                                                  ", "                                                  ", " __     __           _      ____   _____ ______ _ ", " \ \   / /          | |    / __ \ / ____|  ____| |", "  \ \_/ /__  _   _  | |   | |  | | (___ | |__  | |", "   \   / _ \| | | | | |   | |  | |\___ \|  __| | |", "    | | (_) | |_| | | |___| |__| |____) | |____|_|", "    |_|\___/ \__,_| |______\____/|_____/|______(_)"],
+
+"you_win" : ["                                                ", "                                                ", "                                                ", "                                                ", "                                                ", "                                                ", " __     __          __          _______ _   _ _ ", " \ \   / /          \ \        / /_   _| \ | | |", "  \ \_/ /__  _   _   \ \  /\  / /  | | |  \| | |", "   \   / _ \| | | |   \ \/  \/ /   | | | . ` | |", "    | | (_) | |_| |    \  /\  /   _| |_| |\  |_|", "    |_|\___/ \__,_|     \/  \/   |_____|_| \_(_)"],
+
+"you_tie" : ["                                                   ", "                                                   ", "                                                   ", "                                                   ", "                                                   ", "                                                   ", " __     __           _______ _____ ______ _____  _ ", " \ \   / /          |__   __|_   _|  ____|  __ \| |", "  \ \_/ /__  _   _     | |    | | | |__  | |  | | |", "   \   / _ \| | | |    | |    | | |  __| | |  | | |", "    | | (_) | |_| |    | |   _| |_| |____| |__| |_|", "    |_|\___/ \__,_|    |_|  |_____|______|_____/(_)"]
 }
 
-r = "Rock"
-p = "Paper"
-s = "Scissors"
-
+index = 0
+p_str = ""
 while True:
     print("Hello! This is a rock paper scissors game!\nYou will play against a simple CPU that just randomly chooses inputs!")
 
@@ -96,36 +40,266 @@ while True:
         comp_shoot = rand.randint (1,3)
 
         if user_play == "R" and comp_shoot == 1:
-            print("\nThe computer played Rock! You Tied!\n\n")
+            
+            while index < len(newline_workaround["moai_thing"]):
+              print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["moai_thing"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_tie"]):
+              print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["you_tie"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
+            
+
+
+
         elif user_play == "P" and comp_shoot == 2:
-            print("\nThe computer played Paper! You Tied!\n\n")
+            while index < len(newline_workaround["paper_parts"]):
+              print(newline_workaround["paper_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["paper_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_tie"]):
+              print(newline_workaround["paper_parts"][index] + "   " + newline_workaround["you_tie"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
+
+
+
+
         elif user_play == "S" and comp_shoot == 3:
-            print("\nThe computer played Scissors! You Tied!\n\n")
+            while index < len(newline_workaround["scissor_parts"]):
+              print(newline_workaround["scissor_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["scissor_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_tie"]):
+              print(newline_workaround["scissor_parts"][index] + "   " + newline_workaround["you_tie"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
+
+
+
+
         elif user_play == "R" and comp_shoot == 2:
-            print("\nThe computer played Paper! You Lost")
+            while index < len(newline_workaround["moai_thing"]):
+              print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["paper_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_lose"]):
+              print(newline_workaround["dead_moai"][index] + "   " + newline_workaround["you_lose"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
             cpu_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
         elif user_play == "P" and comp_shoot == 3:
-            print("\nThe computer played Scissors! You Lost!\n\n")
+            while index < len(newline_workaround["paper_parts"]):
+              print(newline_workaround["paper_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["scissor_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_lose"]):
+              print(newline_workaround["dead_paper"][index] + "   " + newline_workaround["you_lose"][index])
+              index += 1
+            
+            print(p_str)
+            
+
+            index = 0
+            p_str = ""
             cpu_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
         elif user_play == "S" and comp_shoot == 1:
-            print("\nThe computer played Rock! You Lost!\n\n")
+            while index < len(newline_workaround["scissor_parts"]):
+              print(newline_workaround["scissor_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["moai_thing"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_lose"]):
+              print(newline_workaround["dead_scissors"][index] + "   " + newline_workaround["you_lose"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
             cpu_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
         elif user_play == "R" and comp_shoot == 3:
-            print("\nThe computer played Scissors! You Won!\n\n")
+            while index < len(newline_workaround["moai_thing"]):
+              print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["scissor_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_win"]):
+              print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["you_win"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
             user_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
         elif user_play == "P" and comp_shoot == 1:
-            print("\nThe computer played Rock! You Won!\n\n")
+            while index < len(newline_workaround["paper_parts"]):
+              print(newline_workaround["paper_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["moai_thing"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_win"]):
+              print(newline_workaround["paper_parts"][index] + "   " + newline_workaround["you_win"][index])
+              index += 1
+            
+            print(p_str)
+            
+
+            index = 0
+            p_str = ""
             user_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
         elif user_play == "S" and comp_shoot == 2:
-            print("\nThe computer played Paper! You Won!\n\n")
+            while index < len(newline_workaround["scissor_parts"]):
+              print(newline_workaround["scissor_parts"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["paper_parts"][index])
+              index += 1
+            
+            print(p_str)
+
+            t.sleep(1)
+
+            index = 0
+            p_str = ""
+
+            while index < len(newline_workaround["you_win"]):
+              print(newline_workaround["scissor_parts"][index] + "   " + newline_workaround["you_win"][index])
+              index += 1
+            
+            print(p_str)
+
+            index = 0
+            p_str = ""
+            user_points += 1
+
+            print(f"You have {user_points}")
+            print(f"The computer has {cpu_points}")
+
+
+
+
+
         else:
             print("\nSorry but your input did not match the desired format ;-;\n\n")
         
+
+
+
+
+
         if cpu_points == 10:
             print("\nSeems like the computer won! \nBetter luck next time! \n\n")
             cpu_points = 0
             user_points = 0
+
+            break
         elif user_points == 10:
             print("\nIt seems like you won! Good job!\n\n")
             cpu_points = 0
             user_points = 0
+
+            break

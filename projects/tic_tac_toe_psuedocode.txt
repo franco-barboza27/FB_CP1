@@ -1,0 +1,7 @@
+# FB 1st period Tic Tac Toe psuedocode file
+
+# Add random(nescessary) and any other wanted libraries(optional)
+
+
+
+# Introduce user to

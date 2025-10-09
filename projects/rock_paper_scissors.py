@@ -1,4 +1,4 @@
-# FB rock paper scissors, advanced
+# FB 1st period rock paper scissors, advanced
 
 import random as rand
 import time as t

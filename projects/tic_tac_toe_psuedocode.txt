@@ -4,4 +4,87 @@
 
 
 
-# Introduce user to
+# Introduce user to the program
+
+# make the main game loop
+
+# make the dictionary of lists that will hold the tic tac toe
+
+# make the board reset every game
+
+# make a score keeper variable
+
+# make ASCII art of the board with nummbers 1-9 for each square
+
+            choose a number 1-9
+            
+            They are ordered as such on the board:
+
+              1  2  3
+              4  5  6
+              7  8  9
+               |      |       
+               |      |       
+        _______|______|_______
+               |      |       
+               |      |       
+        _______|______|_______
+               |      |       
+               |      |       
+               |      |        
+
+
+               |   |   |       
+               |   |   |       
+        _______|___|___|_______
+               |   |   |       
+               |   |   |       
+        _______|___|___|_______
+               |   |   |       
+               |   |   |       
+               |   |   |        
+
+            |   |      |       
+            |   |      |       
+        ____|___|______|_______
+            |   |      |       
+            |   |      |       
+        ____|___|______|_______
+            |   |      |       
+            |   |      |       
+            |   |      |        
+
+               |      |    |   
+               |      |    |   
+        _______|______|____|___
+               |      |    |   
+               |      |    |   
+        _______|______|____|___
+               |      |    |   
+               |      |    |   
+               |      |    |    
+               
+        \       |      |       
+           \    |      |       
+        _______\|______|_______
+               |\      |       
+               |   \   |       
+        _______|______\|_______
+               |      |\       
+               |      |    \   
+               |      |        \
+
+               ETC
+
+
+# randomize CPU and player starting turns and state who goes first
+
+# allow them to choose a number, then, put a symbol that corresponds to their turn (ex, 1st player has O and 2nd has like, X or something)
+    update the board tracker (non ASCII art thing) to have what they did. then, remove that option from future turns until it ends
+    finally adjust the size of the board to continue displaying nicely
+
+# each individual turn, check if either the CPU or the player has won and the player has decided to input the provided quit condition
+
+  check by going through every individual win possibility and check if the board is full.
+
+  if one has, ask if they want to play again, add to the score correctly and repeat if they want to play again

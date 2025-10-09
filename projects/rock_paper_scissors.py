@@ -26,10 +26,17 @@ newline_workaround = {
 "you_tie" : ["                                                   ", "                                                   ", "                                                   ", "                                                   ", "                                                   ", "                                                   ", " __     __           _______ _____ ______ _____  _ ", " \ \   / /          |__   __|_   _|  ____|  __ \| |", "  \ \_/ /__  _   _     | |    | | | |__  | |  | | |", "   \   / _ \| | | |    | |    | | |  __| | |  | | |", "    | | (_) | |_| |    | |   _| |_| |____| |__| |_|", "    |_|\___/ \__,_|    |_|  |_____|______|_____/(_)"]
 }
 
+end = ""
 index = 0
 p_str = ""
 while True:
-    print("Hello! This is a rock paper scissors game!\nYou will play against a simple CPU that just randomly chooses inputs!")
+    
+
+    if end == False:
+       break
+    
+
+    print("Hello! This is a rock paper scissors game!\nYou will play against a simple CPU that just randomly chooses inputs! Type 'STOP' to STOP the program.")
 
     cpu_points = 0
     user_points = 0
@@ -39,7 +46,12 @@ while True:
 
         comp_shoot = rand.randint (1,3)
 
-        if user_play == "R" and comp_shoot == 1:
+        if user_play == "STOP":
+           print("Ok, bye!")
+           end = False
+           break
+
+        elif user_play == "R" and comp_shoot == 1:
             
             while index < len(newline_workaround["moai_thing"]):
               print(newline_workaround["moai_thing"][index] + "   " + newline_workaround["v.s."][index] + "   " + newline_workaround["moai_thing"][index])

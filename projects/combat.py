@@ -41,9 +41,34 @@ def stats_shower(stats):
 def leveling(exprate, expdrop, currentlvl):
     "PLACEHOLDER --- WIP"
 
+def player_choice(playerstats, enemystats, result):
+
+    if result == "Lose":
+        return
+    elif result == "Win":
+        return 
+    else:
+        pass
+    
+    dialog("It's your turn now!\nTry using your basic attack on the enemy\n", txt_spd)
+
+    while True:
+        options = input(dialog("1) Attack\n2) Skills\n3) Bestiary\nEnter:", txt_spd))
+        while True:
+            if options == "1":
+                                                                    
+                player_turn(playerstats, enemystats)
+                break
+            elif options == "2":
+                dialog("But don't you want to use an attack first? Also that's a work in progress! You can't use it yet :(\n", txt_spd)
+                break
+            elif options == "3":
+                dialog("I would, but I don't know anything about my enemies yet.\n", txt_spd)
+                break
+
 
 # The game will temporarilly be a roguelike 
-def player_turn(playerstats, enemystats):
+def player_turn(playerstats, enemystats, gameloop):
 
     fight_result = ""
 
@@ -52,30 +77,35 @@ def player_turn(playerstats, enemystats):
     enemy = listenemy[0]
 
 
-    if player_stats["Health"] < 0:
+    if playerstats["Health"] < 0:
         fight_result = dialog("You Died! This is a roguelike, so back to the start you go!\n", txt_spd)
-        return
+        fight_result = "Lose"
+        return fight_result
     else:
         dialog(f"You attack the {enemy}!", txt_spd)
 
-    damage = ((player_stats["Attack"] - enemystats["Defence"]) // 1)
+    damage = ((playerstats["Attack"] - enemystats["Defence"]) // 1)
 
     if damage < 0:
         damage = damage*0
 
     if listplyr[0] == "Mage":
         dialog(f"You sent out an orb of basic mana, simple but efficient-it uses no mental energy!\nIt did {damage} damage!\n", txt_spd)
+        enemystats["Health"] -= damage
     elif listplyr[0] == "Fighter":
         dialog(f"You use your BIG strong MUSCLES and puch it in the face!\nYou did {damage} damage!\n", txt_spd)
+        enemystats["Health"] -= damage
     elif listplyr[0] == "Rogue":
         dialog(f"You throw a dagger at the enemy, stabbing it for {damage} damage.\n", txt_spd)
+        enemystats["Health"] -= damage
     elif listplyr[0] == "Admin":
         dialog(f"You did {damage} damage.\n", txt_spd)
+        enemystats["Health"] -= damage
 
-    enemy_turn(enemystats, playerstats)
+    enemy_turn(enemystats, playerstats, fight_result)
         
 
-def enemy_turn(enemystats, playerstats):
+def enemy_turn(enemystats, playerstats, gameloop):
     
     fight_result = ""
 
@@ -86,24 +116,30 @@ def enemy_turn(enemystats, playerstats):
 
     if enemystats["Health"] < 0:
         fight_result = dialog("You beat the Wild bat!\nAnd with that, your adventure is over!", txt_spd)
-        return
+        gameloop = False
+        return gameloop
     else:
-        dialog(f"You attack the {enemy}!", txt_spd)
+        dialog(f"The {enemy} attacks you!", txt_spd)
 
-    damage = ((player_stats["Attack"] - enemystats["Defence"]) // 1)
+    damage = ((enemystats["Attack"] - playerstats["Defence"]) // 1)
 
     if damage < 0:
         damage = damage*0
 
     enemy_attack = random.randint(1,2)
 
-    if listplyr[0] == "Wild bat":
+    if listenemy[0] == "Wild bat":
         if enemy_attack == 1:
             dialog(f"The Wild bat barrels through the air at you!\nIt did {damage} damage!\n", txt_spd)
+            playerstats["Health"] -= damage
         elif enemy_attack == 2:
             dialog(f"The Wild bat claws at your general direction!\nIt did {damage} damage!\n", txt_spd)
+            playerstats["Health"] -= damage
 
-    player_turn(playerstats, enemystats)
+    player_choice(playerstats, enemystats)
+
+    
+
 
 # I need to figure out a good place to store skills for both players and enemies
 # I also need to figure out a way to decide what skills an enemy will use, will it be random? or will they have patterns for the user to use?>
@@ -115,21 +151,21 @@ def player_skills(playerstats, playerskills, enemystats):
 def enemy_skills(enemystats, enemyskills, playerstats):
     "PLACEHOLDER --- WIP"
 
-def turn_choice(player_spd, enemy_spd, player_stats, enemy_stats):
+def turn_choice(player_spd, enemy_spd, player_stats, enemy_stats, gameloop):
 
     choice = 0
     # Use for loop to iterate over the list that enemytypes gives
     if player_spd == enemy_spd:
         choice = random.randint(1, 2)
         if choice == 1:
-            player_turn(player_stats, enemy_stats)
+            player_turn(player_stats, enemy_stats, gameloop)
         else:
-            enemy_turn(enemy_stats, player_stats)
+            enemy_turn(enemy_stats, player_stats, gameloop)
 
     elif player_spd < enemy_spd:
-        enemy_turn(enemy_stats, player_stats)
+        enemy_turn(enemy_stats, player_stats, gameloop)
     else:
-        player_turn(player_stats, enemy_stats)
+        player_turn(player_stats, enemy_stats, gameloop)
 
 def enemyrand(enemytypes, enemy_bank):
     "PLACEHOLDER --- WIP"
@@ -153,8 +189,9 @@ def enemyrand(enemytypes, enemy_bank):
 while True:
 
     run_start = time.perf_counter()
+    gameloop = True
 
-    while True:
+    while gameloop:
 
         player_stats = {}
 
@@ -252,19 +289,8 @@ while True:
 
         while True:
             dialog("Suddenly, you remember how to fight--slightly--you remember your basics.\n", txt_spd)
-
-            dialog("It's your turn now!\nTry using your basic attack on the enemy\n", txt_spd)
-            options = input(dialog("1) Attack <----\n2) Skills\n3) Bestiary\nEnter:", txt_spd))
-            while True:
-                if options == "1":
-                                                                        # Eventually this function call should hopefully be using the enemy randomizer instead of 0
-                    turn_choice(character_types[career_index]["Speed"], mons_types[0]["Speed"], character_types[career_index], mons_types[0])
-                elif options == "2":
-                    dialog("But don't you want to use an attack first? Also that's a work in progress! You can't use it yet :(\n", txt_spd)
-                    break
-                elif options == "3":
-                    dialog("I would, but I don't know anything about my enemies yet.\n", txt_spd)
-                    break
+                                                                # Eventually this function call should hopefully be using the enemy randomizer instead of 0
+            turn_choice(character_types[career_index]["Speed"], mons_types[0]["Speed"], character_types[career_index], mons_types[0], gameloop)
 
 
 # Future thing's to add in the case I continue this project

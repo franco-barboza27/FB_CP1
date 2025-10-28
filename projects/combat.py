@@ -2,18 +2,19 @@
 
 import random
 import time
+import sys
 
-def dialog(text, spd, delay=.05):
+def dialog(text, txtspd, delay=.05):
     a = ""
     delay = 0
 
-    if spd == "S":
+    if txtspd == "S":
         delay = .1
-    elif spd == "M":
+    elif txtspd == "M":
         delay = .05
-    elif spd == "F":
+    elif txtspd == "F":
         delay = .025
-    elif spd == "admin":
+    elif txtspd == "admin":
         delay = .001
     else:
         delay = .05
@@ -32,31 +33,22 @@ def stats_shower(stats):
     
     return display
 
-# I also need to figure out where to store the players classes because I want them to have different level up rates 
-# but also I want it to get harder to level up with more levels
-# Furthermore I need to decide what the rate of increase will be for the exp requirement to level up,
-# and how to store what level they are,
-# then unlock more skills based on their stored level
 
-def leveling(exprate, expdrop, currentlvl):
-    "PLACEHOLDER --- WIP"
 
-def player_choice(playerstats, enemystats, result):
 
-    if result == "Lose":
-        return
-    elif result == "Win":
-        return 
-    else:
-        pass
-    
+
+def player_choice(playerstats, enemystats):
+
+    if playerstats["Health"] < 0:
+        dialog("You Died! This is a roguelike, so back to the start you go!\n", txt_spd)
+        sys.exit()
+
     dialog("It's your turn now!\nTry using your basic attack on the enemy\n", txt_spd)
 
     while True:
         options = input(dialog("1) Attack\n2) Skills\n3) Bestiary\nEnter:", txt_spd))
         while True:
             if options == "1":
-                                                                    
                 player_turn(playerstats, enemystats)
                 break
             elif options == "2":
@@ -65,12 +57,17 @@ def player_choice(playerstats, enemystats, result):
             elif options == "3":
                 dialog("I would, but I don't know anything about my enemies yet.\n", txt_spd)
                 break
+            else:
+                dialog("That's not an option!\n", txt_spd)
+                break
+
+
+
+
 
 
 # The game will temporarilly be a roguelike 
-def player_turn(playerstats, enemystats, gameloop):
-
-    fight_result = ""
+def player_turn(playerstats, enemystats):
 
     listenemy = list(enemystats.keys())
     listplyr = list(playerstats.keys())
@@ -78,16 +75,15 @@ def player_turn(playerstats, enemystats, gameloop):
 
 
     if playerstats["Health"] < 0:
-        fight_result = dialog("You Died! This is a roguelike, so back to the start you go!\n", txt_spd)
-        fight_result = "Lose"
-        return fight_result
+        dialog("You Died! This is a roguelike, so back to the start you go!\n", txt_spd)
+        sys.exit()
     else:
-        dialog(f"You attack the {enemy}!", txt_spd)
+        dialog(f"You attack the {enemy}!\n", txt_spd)
 
     damage = ((playerstats["Attack"] - enemystats["Defence"]) // 1)
 
     if damage < 0:
-        damage = damage*0
+        damage = 0
 
     if listplyr[0] == "Mage":
         dialog(f"You sent out an orb of basic mana, simple but efficient-it uses no mental energy!\nIt did {damage} damage!\n", txt_spd)
@@ -102,24 +98,29 @@ def player_turn(playerstats, enemystats, gameloop):
         dialog(f"You did {damage} damage.\n", txt_spd)
         enemystats["Health"] -= damage
 
-    enemy_turn(enemystats, playerstats, fight_result)
-        
+    enemy_turn(enemystats, playerstats)
 
-def enemy_turn(enemystats, playerstats, gameloop):
-    
-    fight_result = ""
+
+
+
+def enemy_turn(enemystats, playerstats):
 
     listenemy = list(enemystats.keys())
     listplyr = list(playerstats.keys())
     enemy = listenemy[0]
 
-
-    if enemystats["Health"] < 0:
-        fight_result = dialog("You beat the Wild bat!\nAnd with that, your adventure is over!", txt_spd)
-        gameloop = False
-        return gameloop
+    dialog(f"You have {playerstats["Health"]} HP.\n", txt_spd)
+    if enemystats["Health"] >= 0:
+        dialog(f"The enemy has {enemystats["Health"]} HP.\n", txt_spd)
     else:
-        dialog(f"The {enemy} attacks you!", txt_spd)
+        enemystats["Health"] = 0
+        dialog(f"The enemy has {enemystats["Health"]} HP.\n", txt_spd)
+
+    if enemystats["Health"] <= 0:
+        fight_result = dialog("You beat the Wild bat!\nAnd with that, your adventure is over!\n", txt_spd)
+        sys.exit()
+    else:
+        dialog(f"The {enemy} attacks you!\n", txt_spd)
 
     damage = ((enemystats["Attack"] - playerstats["Defence"]) // 1)
 
@@ -138,34 +139,29 @@ def enemy_turn(enemystats, playerstats, gameloop):
 
     player_choice(playerstats, enemystats)
 
-    
 
 
-# I need to figure out a good place to store skills for both players and enemies
-# I also need to figure out a way to decide what skills an enemy will use, will it be random? or will they have patterns for the user to use?>
-# I could do both, for example maybe regular enemies could have randomized turn usage, and bosses could be more choreographed
 
-def player_skills(playerstats, playerskills, enemystats):
-    "PLACEHOLDER --- WIP"
 
-def enemy_skills(enemystats, enemyskills, playerstats):
-    "PLACEHOLDER --- WIP"
-
-def turn_choice(player_spd, enemy_spd, player_stats, enemy_stats, gameloop):
+def turn_choice(player_spd, enemy_spd, player_stats, enemy_stats):
 
     choice = 0
     # Use for loop to iterate over the list that enemytypes gives
     if player_spd == enemy_spd:
         choice = random.randint(1, 2)
         if choice == 1:
-            player_turn(player_stats, enemy_stats, gameloop)
+            player_choice(player_stats, enemy_stats)
         else:
-            enemy_turn(enemy_stats, player_stats, gameloop)
+            enemy_turn(enemy_stats, player_stats)
 
     elif player_spd < enemy_spd:
-        enemy_turn(enemy_stats, player_stats, gameloop)
+        enemy_turn(enemy_stats, player_stats)
     else:
-        player_turn(player_stats, enemy_stats, gameloop)
+        player_choice(player_stats, enemy_stats)
+
+
+
+
 
 def enemyrand(enemytypes, enemy_bank):
     "PLACEHOLDER --- WIP"
@@ -184,114 +180,126 @@ def enemyrand(enemytypes, enemy_bank):
         elif enemy_bank <=3:
             enemy_amount = random.randint(1, enemy_bank+1)
             amount -= enemy_amount
-            
+
+# I need to figure out a good place to store skills for both players and enemies
+# I also need to figure out a way to decide what skills an enemy will use, will it be random? or will they have patterns for the user to use?>
+# I could do both, for example maybe regular enemies could have randomized turn usage, and bosses could be more choreographed
+
+def player_skills(playerstats, playerskills, enemystats):
+    "PLACEHOLDER --- WIP"
+
+def enemy_skills(enemystats, enemyskills, playerstats):
+    "PLACEHOLDER --- WIP"
+
+# I also need to figure out where to store the players classes because I want them to have different level up rates 
+# but also I want it to get harder to level up with more levels
+# Furthermore I need to decide what the rate of increase will be for the exp requirement to level up,
+# and how to store what level they are,
+# then unlock more skills based on their stored level
+
+def leveling(exprate, expdrop, currentlvl):
+    "PLACEHOLDER --- WIP"
 
 while True:
 
-    run_start = time.perf_counter()
-    gameloop = True
+    player_stats = {}
 
-    while gameloop:
+    character_types = [{"Mage":"A magic user who relies on mental fortitude(MF) to use spells.", "Health":50, "Attack":20, "Defence":10, "Mental Energy":30, "Speed":30, "EXP rate":1.2, "Base Accuracy":1},
+                {"Fighter":"A fighter who uses physical prowess to pummel enemies.", "Health":100, "Attack":30, "Defence":30, "Mental Energy":10, "Speed":25, "EXP rate":1.2, "Base Accuracy":1},
+                {"Rogue":"A speedy scout with all around moderate stats", "Health":75, "Attack":20, "Defence":20, "Mental Energy":20, "Speed":40, "EXP rate":1.2, "Base Accuracy":1},
+                {"Admin":"Used by the creator to test the game, if you're using it, I hope you're also testing the game.", "Health":10, "Attack":100000, "Defence":1, "Mental Energy":100000, "Speed":10, "EXP rate":100000, "Base accuracy":100000}]
 
-        player_stats = {}
-
-        character_types = [{"Mage":"A magic user who relies on mental fortitude(MF) to use spells.", "Health":50, "Attack":20, "Defence":10, "Mental Energy":30, "Speed":30, "EXP rate":1.2, "Base Accuracy":1},
-                    {"Fighter":"A fighter who uses physical prowess to pummel enemies.", "Health":100, "Attack":30, "Defence":30, "Mental Energy":10, "Speed":25, "EXP rate":1.2, "Base Accuracy":1},
-                    {"Rogue":"A speedy scout with all around moderate stats", "Health":75, "Attack":20, "Defence":20, "Mental Energy":20, "Speed":40, "EXP rate":1.2, "Base Accuracy":1},
-                    {"Admin":"Used by the creator to test the game, if you're using it, I hope you're also testing the game.", "Health":100000, "Attack":100000, "Defence":100000, "Mental Energy":100000, "Speed":100000, "EXP rate":100000, "Base accuracy":100000}]
-
-        mons_types = [{"Wild bat":"A large bat whose claws won't hesitate to gouge you eyes out, be careful!", "Health":40, "Attack":20, "Defence":5, "Mental Energy":0, "Speed":35, "EXP":10, "Base Accuracy":1},
-                    {"Giant centipede":"Disgusting. A hundred legs comes with quite some speed and it's tough exoskeleton makes it a formidable foe.", "Health":40, "Attack":10, "Defence":30, "Speed":30, "EXP":20, "Base Accuracy":1},
-                    {"Fire sprite":"A fist sized ball of fire with a equally petulant behavior, watch for it's potent magic!", "Health":20, "Attack":30, "Defence":10, "Speed":30, "EXP":15, "Base Accuracy":.7},
-                    {"Living Flame":"A coalition of fire sprites working together as one. It is much stronger in all aspects, maybe try disrupting their unison?", "Health":30, "Attack":40, "Defence":15, "Speed":20, "EXP":30, "Base Accuracy":.9},
-                    {"Fuoco, the igneous":"A mass of rocks manipulated by a Greater Fire Sprite. It uses the rocks as a home of sorts, but it also uses it to squish trespassers. It might be a good idea to attack when you can see it's core!", "Health":80, "Attack":40, "Defence":50, "Speed":20, "EXP":500, "Base Accuracy":.8}]
+    mons_types = [{"Wild bat":"A large bat whose claws won't hesitate to gouge you eyes out, be careful!", "Health":40, "Attack":20, "Defence":5, "Mental Energy":0, "Speed":35, "EXP":10, "Base Accuracy":1},
+                {"Giant centipede":"Disgusting. A hundred legs comes with quite some speed and it's tough exoskeleton makes it a formidable foe.", "Health":40, "Attack":10, "Defence":30, "Speed":30, "EXP":20, "Base Accuracy":1},
+                {"Fire sprite":"A fist sized ball of fire with a equally petulant behavior, watch for it's potent magic!", "Health":20, "Attack":30, "Defence":10, "Speed":30, "EXP":15, "Base Accuracy":.7},
+                {"Living Flame":"A coalition of fire sprites working together as one. It is much stronger in all aspects, maybe try disrupting their unison?", "Health":30, "Attack":40, "Defence":15, "Speed":20, "EXP":30, "Base Accuracy":.9},
+                {"Fuoco, the igneous":"A mass of rocks manipulated by a Greater Fire Sprite. It uses the rocks as a home of sorts, but it also uses it to squish trespassers. It might be a good idea to attack when you can see it's core!", "Health":80, "Attack":40, "Defence":50, "Speed":20, "EXP":500, "Base Accuracy":.8}]
 
 
 
-        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
-        dialog("Greetings, this is a simple RPG type game. To begin, I would like to ask a few questions.\n", "M")
-        while True:
-            txt_spd = input(dialog("What speed of dialog would you like? The current one, Medium(M), Fast(F) or Slow(S)?\nEnter:", "M"))
+    dialog("Greetings, this is a simple RPG type game. To begin, I would like to ask a few questions.\n", "M")
+    while True:
+        txt_spd = input(dialog("What speed of dialog would you like? The current one, Medium(M), Fast(F) or Slow(S)?\nEnter:", "M"))
 
-            if txt_spd == "M":
-                dialog("Very well\n", txt_spd)
-            elif txt_spd == "F":
-                dialog("Very well\n", txt_spd)
-            elif txt_spd == "S":
-                dialog("Very well\n", txt_spd)
-            elif txt_spd == "admin":
-                dialog("Very well\n", txt_spd)
-            else:
-                dialog("I'm sorry, that input did not match the format.\n", txt_spd)
-                continue
+        if txt_spd == "M":
+            dialog("Very well\n", txt_spd)
+        elif txt_spd == "F":
+            dialog("Very well\n", txt_spd)
+        elif txt_spd == "S":
+            dialog("Very well\n", txt_spd)
+        elif txt_spd == "admin":
+            dialog("Very well\n", txt_spd)
+        else:
+            dialog("I'm sorry, that input did not match the format.\n", txt_spd)
+            continue
 
-            dia_check = input(dialog("Is this speed sufficient?\nY/N Enter:", txt_spd))
+        dia_check = input(dialog("Is this speed sufficient?\nY/N Enter:", txt_spd))
 
-            if dia_check == "Y":
-                dialog("Very well, we will now continue\n", txt_spd)
-                print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-                break
-            elif dia_check == "N":
-                dialog("Very well, you may now choose again.\n", txt_spd)
-            else:
-                dialog("I'm sorry, but that is not in the required format.\n", txt_spd)
+        if dia_check == "Y":
+            dialog("Very well, we will now continue\n", txt_spd)
+            print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+            break
+        elif dia_check == "N":
+            dialog("Very well, you may now choose again.\n", txt_spd)
+        else:
+            dialog("I'm sorry, but that is not in the required format.\n", txt_spd)
 
-        dialog("You find yourself in a dark cave.\nYour head is pounding as if you got hit in the head by a club.\n'Where am I?'\n'It hurts to even think right now...'\nSuddenly, you hear a sound, getting louder and louder.\nIt sounds like wings flapping in the air, and soon, you feel the gusts of wind on your neck.\n'Who is that?!' You say, running forward, and spinning around.\nIt takes a second for your eyes to adjust, but in the nick of time, you see a gigantic bat hurtling towards you.\nYou dodge out of the way, surprised by your own reflexes.\n'Come on, think! Me, THINK!'\nYou try to remember, what did you do before being here, in this... cave?\n", txt_spd)
+    dialog("You find yourself in a dark cave.\nYour head is pounding as if you got hit in the head by a club.\n'Where am I?'\n'It hurts to even think right now...'\nSuddenly, you hear a sound, getting louder and louder.\nIt sounds like wings flapping in the air, and soon, you feel the gusts of wind on your neck.\n'Who is that?!' You say, running forward, and spinning around.\nIt takes a second for your eyes to adjust, but in the nick of time, you see a gigantic bat hurtling towards you.\nYou dodge out of the way, surprised by your own reflexes.\n'Come on, think! Me, THINK!'\nYou try to remember, what did you do before being here, in this... cave?\n", txt_spd)
 
-        dialog("Remember.... you were a mage? No a fighter?... Maybe some sort of Rogue?\n", txt_spd)
+    dialog("Remember.... you were a mage? No a fighter?... Maybe some sort of Rogue?\n", txt_spd)
 
-        while True:
+    while True:
 
-            career = input(dialog("1) Mage\n2) Fighter\n3) Rogue\nEnter:", txt_spd))
+        career = input(dialog("1) Mage\n2) Fighter\n3) Rogue\nEnter:", txt_spd))
+        career_index = 0
+        print("\n")
+
+        if career == "1":
+            dialog(stats_shower(character_types[0]), txt_spd)
+            player_stats = character_types[0]
             career_index = 0
-            print("\n")
+            career = "Mage"
+        elif career == "2":
+            dialog(stats_shower(character_types[1]), txt_spd)
+            player_stats = character_types[1]
+            career_index = 1
+            career = "Fighter"
+        elif career == "3":
+            dialog(stats_shower(character_types[2]), txt_spd)
+            career_index = 2
+            player_stats = character_types[2]
+            career = "Rogue"
+        elif career == "admin":
+            dialog(stats_shower(character_types[3]), txt_spd)
+            career_index = 3
+            player_stats = character_types[3]
+            career = "Admin"
+            dialog("Oh I didn't know you knew about this!\nHello, creator... or someone who actually looked through the code...", txt_spd)
+        else:
+            dialog("That did not match the required input.", txt_spd)
 
-            if career == "1":
-                dialog(stats_shower(character_types[0]), txt_spd)
-                player_stats = character_types[0]
-                career_index = 0
-                career = "Mage"
-            elif career == "2":
-                dialog(stats_shower(character_types[1]), txt_spd)
-                player_stats = character_types[1]
-                career_index = 1
-                career = "Fighter"
-            elif career == "3":
-                dialog(stats_shower(character_types[2]), txt_spd)
-                career_index = 2
-                player_stats = character_types[2]
-                career = "Rogue"
-            elif career == "admin":
-                dialog(stats_shower(character_types[3]), txt_spd)
-                career_index = 3
-                player_stats = character_types[3]
-                career = "Admin"
-                dialog("Oh I didn't know you knew about this!\nHello, creator... or someone who actually looked through the code...", txt_spd)
-            else:
-                dialog("That did not match the required input.", txt_spd)
+        stat_conf = input(dialog("\nAre you sure you're remembering correctly?\nEnter(Y/N):", txt_spd))
 
-            stat_conf = input(dialog("\nAre you sure you're remembering correctly?\nEnter(Y/N):", txt_spd))
+        if stat_conf == "Y":
+            break
+        elif stat_conf == "N":
+            dialog("'Hmm... No... think HARDER you HAVE to remember, or you're SCREWED!'\n", txt_spd)
+        else:
+            dialog("'That's not relevant right now!'\n", txt_spd)
 
-            if stat_conf == "Y":
-                break
-            elif stat_conf == "N":
-                dialog("'Hmm... No... think HARDER you HAVE to remember, or you're SCREWED!'\n", txt_spd)
-            else:
-                dialog("'That's not relevant right now!'\n", txt_spd)
-
-        dialog(f"'That's right! I was a {career}'\n", txt_spd)
+    dialog(f"'That's right! I was a {career}'\n", txt_spd)
 
 
 
-        # level 1 and tutorial loop, only has bats, and currently only 1 fight
-        # In the finished version will have a minimum of 3 to beat level, with a max of 8 and then forced to move on
+    # level 1 and tutorial loop, only has bats, and currently only 1 fight
+    # In the finished version will have a minimum of 3 to beat level, with a max of 8 and then forced to move on
 
-        while True:
-            dialog("Suddenly, you remember how to fight--slightly--you remember your basics.\n", txt_spd)
-                                                                # Eventually this function call should hopefully be using the enemy randomizer instead of 0
-            turn_choice(character_types[career_index]["Speed"], mons_types[0]["Speed"], character_types[career_index], mons_types[0], gameloop)
-
+    while True:
+        dialog("Suddenly, you remember how to fight--slightly--you remember your basics.\n", txt_spd)
+                                                            # Eventually this function call should hopefully be using the enemy randomizer instead of 0
+        turn_choice(character_types[career_index]["Speed"], mons_types[0]["Speed"], character_types[career_index], mons_types[0])
 
 # Future thing's to add in the case I continue this project
     #

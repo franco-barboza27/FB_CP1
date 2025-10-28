@@ -39,6 +39,10 @@ def stats_shower(stats):
 
 def player_choice(playerstats, enemystats):
 
+    if playerstats["Health"] < 0:
+        dialog("You Died! This is a roguelike, so back to the start you go!\n", txt_spd)
+        sys.exit()
+
     dialog("It's your turn now!\nTry using your basic attack on the enemy\n", txt_spd)
 
     while True:
@@ -203,7 +207,7 @@ while True:
     character_types = [{"Mage":"A magic user who relies on mental fortitude(MF) to use spells.", "Health":50, "Attack":20, "Defence":10, "Mental Energy":30, "Speed":30, "EXP rate":1.2, "Base Accuracy":1},
                 {"Fighter":"A fighter who uses physical prowess to pummel enemies.", "Health":100, "Attack":30, "Defence":30, "Mental Energy":10, "Speed":25, "EXP rate":1.2, "Base Accuracy":1},
                 {"Rogue":"A speedy scout with all around moderate stats", "Health":75, "Attack":20, "Defence":20, "Mental Energy":20, "Speed":40, "EXP rate":1.2, "Base Accuracy":1},
-                {"Admin":"Used by the creator to test the game, if you're using it, I hope you're also testing the game.", "Health":100000, "Attack":100000, "Defence":100000, "Mental Energy":100000, "Speed":100000, "EXP rate":100000, "Base accuracy":100000}]
+                {"Admin":"Used by the creator to test the game, if you're using it, I hope you're also testing the game.", "Health":10, "Attack":100000, "Defence":1, "Mental Energy":100000, "Speed":10, "EXP rate":100000, "Base accuracy":100000}]
 
     mons_types = [{"Wild bat":"A large bat whose claws won't hesitate to gouge you eyes out, be careful!", "Health":40, "Attack":20, "Defence":5, "Mental Energy":0, "Speed":35, "EXP":10, "Base Accuracy":1},
                 {"Giant centipede":"Disgusting. A hundred legs comes with quite some speed and it's tough exoskeleton makes it a formidable foe.", "Health":40, "Attack":10, "Defence":30, "Speed":30, "EXP":20, "Base Accuracy":1},

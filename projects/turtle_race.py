@@ -3,31 +3,36 @@
 import turtle
 import random
 
-t = turtle.Turtle()
+line = turtle.Turtle()
 
-line_color = ['red', 'black', 'blue', 'orange', 'yellow']
-fill = ['pink', 'white', 'cyan']
+line.hideturtle()
 
-side_len = random.randint(100, 300)
-square_width = random.randint(100, 300)
-for turn in range(4):
-    for lc in line_color:
-        t.right(random.randint(0,360))
-        for fc in fill:
-            t.fillcolor(fc)
-            t.color(lc)
-            t.begin_fill()
-            t.forward(50)
-            t.right(90)
-            t.forward(50)
-            t.right(90)
-            t.forward(50)
-            t.right(90)
-            t.forward(50)
-            t.end_fill()
-            t.penup()
-            t.right(90)
-            t.forward(100)
-            t.pendown()
+line.teleport(200,500)
+
+line.right(90)
+
+line.width(10)
+line.forward(1000)
+green = turtle.Turtle()
+blue = turtle.Turtle()
+red = turtle.Turtle()
+yellow = turtle.Turtle()
+pink = turtle.Turtle()
+
+turtles = {"green":green, "blue":blue, "red":red, "yellow":yellow, "pink":pink}
+location = 450
+for turty in turtles:
+    print(turty)
+    turtles[turty].color(turty)
+    turtles[turty].shape("turtle")
+    turtles[turty].teleport(-400, location)
+    location -= 50
+
+
+def winCheck(turt, endcord):
+
+    turtle.write(f"{turt} won!")
+    turtle.done()
+
 
 turtle.done()

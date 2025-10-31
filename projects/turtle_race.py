@@ -29,8 +29,6 @@ def begin(check):
 
         # puts all the turtles to their spots
         turtles = {"green":green, "blue":blue, "red":red, "black":black, "pink":pink}
-        move = 0
-        direction = 0
         location = 400
         for turty in turtles:
             print(turty)
@@ -38,7 +36,7 @@ def begin(check):
             turtles[turty].shape("turtle")
             turtles[turty].teleport(-500, location)
             location -= 200
-    go(turtles, writer_turt)
+    go(turtles, writer_turt,)
 
 def go(turts, writer):
     # Says the GO message part
@@ -59,7 +57,7 @@ def gameloop(turts, writer):
     loop = True
     while loop:
         for turty in turts:
-            move = random.randint(5, 10)
+            steps = random.randint(5, 10)
             direction = random.randint(-5, 5)
             if turts[turty].ycor() <= -475 or turts[turty].ycor() >= 475:
                 turts[turty].penup()
@@ -67,7 +65,7 @@ def gameloop(turts, writer):
                 turts[turty].seth(0)
                 turts[turty].pendown()
             turts[turty].right(direction)
-            turts[turty].forward(move)
+            turts[turty].forward(steps)
             closeness = turts[turty].xcor()
             if closeness >= 200:
                 message = str(turty)

@@ -2,6 +2,21 @@
 
 import turtle
 import random
+import time
+import sys
+
+print("Hello!, this is a turtle race program!\nPlease make sure to fullscreen!")
+while True:
+    start = input("Would you like to begin?Y/N:\n")
+    if start == "Y":
+        print("Great! Now beginning the race!")
+        time.sleep(1)
+        break
+    elif start == "N":
+        print("Ok, goodbye!")
+        sys.exit()
+    else:
+        print("That's not an option!\n Try again.")
 
 # Makes the finish line
 line = turtle.Turtle()
@@ -10,10 +25,6 @@ line.teleport(200,500)
 line.right(90)
 line.width(10)
 line.forward(1000)
-
-screen = turtle.Screen()
-screen.screensize(1000, 1000)
-
 
 # declares all the racers
 green = turtle.Turtle()
@@ -24,9 +35,8 @@ pink = turtle.Turtle()
 
 # gets the writer turtle to the right place
 writer_turt = turtle.Turtle()
-writer_turt.teleport(0, 500)
-
-
+writer_turt.hideturtle()
+writer_turt.teleport(300, 0)
 
 # puts all the turtles to their spots
 turtles = {"green":green, "blue":blue, "red":red, "black":black, "pink":pink}
@@ -40,9 +50,21 @@ for turty in turtles:
     turtles[turty].teleport(-500, location)
     location -= 200
 
+# Says the GO message part
+writer_turt.write("3", align="center", font=("Times New Roman", 40, "normal"))
+time.sleep(1)
+writer_turt.clear()
+writer_turt.write("2", align="center", font=("Times New Roman", 40, "normal"))
+time.sleep(1)
+writer_turt.clear()
+writer_turt.write("1", align="center", font=("Times New Roman", 40, "normal"))
+time.sleep(1)
+writer_turt.clear()
+writer_turt.write("GO!", align="center", font=("Times New Roman", 40, "normal"))
 
-#moves each turtle
-while True:
+# moves each turtle and checks who wins then ends when a turtle wins
+loop = True
+while loop:
     for turty in turtles:
         move = random.randint(5, 10)
         direction = random.randint(-5, 5)
@@ -53,15 +75,13 @@ while True:
             turtles[turty].pendown()
         turtles[turty].right(direction)
         turtles[turty].forward(move)
-        if turtles[turty].xcor(200):
-            message = f"{turtles}"
-            writer_turt.write(f"The {message} turtle Won!!!", move=False, align="center", font=("Arial", 8, "normal"))
-
-
-def winCheck(turt, endcord):
-
-    turtle.write(f"{turt} won!")
-    turtle.done()
-
+        closeness = turtles[turty].xcor()
+        if closeness >= 200:
+            message = str(turty)
+            writer_turt.clear()
+            writer_turt.teleport(0, 0)
+            writer_turt.write(f"The {message} Turtle Won!!!", move=False, align="right", font=("Times New Roman", 50, "normal"))
+            loop = False
+            break
 
 turtle.done()

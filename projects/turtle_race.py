@@ -5,7 +5,7 @@ import random
 import time
 import sys
 
-def begin(check):
+def readyset(check):
     if check == "Y":
         # Makes the finish line
         line = turtle.Turtle()
@@ -83,7 +83,7 @@ while True:
     if start == "Y":
         print("Great! Now beginning the race!")
         time.sleep(1)
-        begin(start)
+        readyset(start)
         break
     elif start == "N":
         print("Ok, goodbye!")

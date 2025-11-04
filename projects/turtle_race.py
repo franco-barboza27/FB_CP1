@@ -21,6 +21,8 @@ def readyset(check):
         red = turtle.Turtle()
         black = turtle.Turtle()
         pink = turtle.Turtle()
+        yellow = turtle.Turtle()
+        
 
         # gets the writer turtle to the right place
         writer_turt = turtle.Turtle()
@@ -28,14 +30,14 @@ def readyset(check):
         writer_turt.teleport(300, 0)
 
         # puts all the turtles to their spots
-        turtles = {"green":green, "blue":blue, "red":red, "black":black, "pink":pink}
+        turtles = {"green":green, "blue":blue, "red":red, "black":black, "pink":pink, "yellow":yellow}
         location = 400
         for turty in turtles:
             print(turty)
             turtles[turty].color(turty)
             turtles[turty].shape("turtle")
             turtles[turty].teleport(-500, location)
-            location -= 200
+            location -= 50
     go(turtles, writer_turt,)
 
 def go(turts, writer):

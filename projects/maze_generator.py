@@ -11,9 +11,9 @@ def gridsize(size):
     outsideparts = [
             # Top V
                   [],
-                [],[], # <==sides
+                [],[], # <==top & bottom
                   []
-           # untop ^
+           # side ^
     ]
     for sides in outsideparts:
         tracker = 0
@@ -22,12 +22,14 @@ def gridsize(size):
             sides.append(1)
 
     for i in range(1, size):
-        rows.append([])
+        rows.append([])                                         
         collumns.append([])
-    mazemaker(rows, collumns, outsideparts)
+    mazegenerator(rows, collumns, outsideparts)
 
 def is_solvable(rows, collumns, start, end):
-    # needs to change in accordance to the new 0,0 cord
+    # needs to change in accordance to the new start coordinate
+
+
 
     size = len(rows)
     visited = set()
@@ -58,7 +60,7 @@ def is_solvable(rows, collumns, start, end):
         
     return False
 
-def mazemaker(rows, collumns, outsideparts):
+def mazegenerator(rows, collumns, outsideparts):
     mazesize = len(rows)
     
     rowwy = 0
@@ -107,10 +109,62 @@ def mazemaker(rows, collumns, outsideparts):
         outsideparts[3][end] = 0
         end = outsideparts[3]
 
-    is_solvable(rows, collumns, start, end)
+    drawmaze(rows, collumns, outsideparts)
+    #is_solvable(rows, collumns, start, end)
 
-def drawmaze():
+def drawmaze(rows, collumns, sides):
     maze_maker = turtle.Turtle()
+    maze_maker.speed(0)
+    maze_maker.penup()
+    size = len(rows)+1
+    startx = size * -50
+    starty = size * -50
+    maze_maker.teleport(startx, starty)
+    print(maze_maker.position())
+
+    # draw the sides
+    for side in sides:
+        for wall in side:
+            if wall == 0:
+                maze_maker.penup()
+                maze_maker.forward(50)
+            if wall == 1:
+                maze_maker.pendown()
+                maze_maker.forward(50)
+        maze_maker.left(90)
+
+    i = 0
+
+    for row in rows:
+        
+        i += 1
+        maze_maker.teleport(startx, starty+i*50)
+        for wall in row:
+            if wall == 0:
+                maze_maker.penup()
+                maze_maker.forward(50)
+            if wall == 1:
+                maze_maker.pendown()
+                maze_maker.forward(50)
+        maze_maker.teleport(startx, starty)
+
+    i = 0
+    maze_maker.left(90)
+    for collumn in collumns:
+        
+        i += 1
+        maze_maker.teleport(startx+i*50, starty)
+        for wall in collumn:
+            if wall == 0:
+                maze_maker.penup()
+                maze_maker.forward(50)
+            if wall == 1:
+                maze_maker.pendown()
+                maze_maker.forward(50)
+        maze_maker.teleport(startx, starty)
+
+
+    turtle.done()
     pass
 
 while True:
@@ -122,6 +176,5 @@ while True:
         break
     else:
         print("What? That's a wierd input, try another one.")
-
 
 gridsize(sizeask)

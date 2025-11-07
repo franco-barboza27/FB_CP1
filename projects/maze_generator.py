@@ -26,19 +26,53 @@ def gridsize(size):
         collumns.append([])
     mazegenerator(rows, collumns, outsideparts)
 
-def is_solvable(rows, collumns, start, end):
-    # needs to change in accordance to the new start coordinate
-
-
+def is_solvable(rows, collumns, sides):
+    # needs to account for the new start coordinate each generation
 
     size = len(rows)
     visited = set()
-    stack = [(0,0)]
+    foundstart = []
+
+    for side in sides:
+        for wall in side:
+            if foundstart:
+                if side.index() == 0:
+                    ey = 0
+                    ex = wall.index()
+                elif side.index() == 1:
+                    ey = wall.index()
+                    ex = size
+                elif side.index() == 2:
+                    ey = size
+                    ex = wall.index()
+                elif side.index() == 3:
+                    ey = 0
+                    ex = wall.index()
+                continue
+
+            if index(0):
+                sy = 0
+                sx = wall.index()
+                foundstart.append(side.index())
+            elif side.index() == 1:
+                sy = wall.index()
+                sx = size
+                foundstart.append(side.index())
+            elif side.index() == 2:
+                sy = size
+                sx = wall.index()
+                foundstart.append(side.index())
+            elif side.index() == 3:
+                sy = 0
+                sx = wall.index()
+                foundstart.append(side.index())
+
+    stack = [(sx, sy)]
 
     while stack:
         x, y = stack.pop()
 
-        if x == size - 1 and y == size -1:
+        if x == ex - 1 and y == ey -1:
             return True
         
         if (x, y) in visited:
@@ -57,60 +91,69 @@ def is_solvable(rows, collumns, start, end):
 
         if y > 0 and rows[y][x] == 0:
             stack.append((x,y-1))
-        
+
     return False
 
 def mazegenerator(rows, collumns, outsideparts):
-    mazesize = len(rows)
+    while True:
+        mazesize = len(rows)
+        
+        rowwy = 0
+        for row in rows:
+            everyline = 0
+            while everyline in range(0, mazesize+1):
+                #looping infinitely currently
+                upwall = random.randint(0,1)
+                collumns[rowwy].append(upwall)
+                sidewall = random.randint(0,1)
+                rows[rowwy].append(sidewall)
+                everyline += 1
+            rowwy += 1
+
+        # keeps track of sides and chooses two different start points
     
-    rowwy = 0
-    for row in rows:
-        everyline = 0
-        while everyline in range(0, mazesize+1):
-            #looping infinitely currently
-            upwall = random.randint(0,1)
-            collumns[rowwy].append(upwall)
-            sidewall = random.randint(0,1)
-            rows[rowwy].append(sidewall)
-            everyline += 1
-        rowwy += 1
+        possiblesides = [1, 2, 3, 4]
+        oppeningside = random.choice(possiblesides)
+        start = random.randint(0, mazesize)
+        end = random.randint(0, mazesize)
 
-    # keeps track of sides and chooses two different start points
-    possiblesides = [1, 2, 3, 4]
-    oppeningside = random.choice(possiblesides)
-    start = random.randint(0, mazesize+1)
-    end = random.randint(0, mazesize+1)
+        if oppeningside == 1:
+            outsideparts[0][start] = 0
+            start = outsideparts[0]
+        if oppeningside == 2:
+            outsideparts[1][start] = 0
+            start = outsideparts[1]
+        if oppeningside == 3:
+            outsideparts[2][start] = 0
+            start = outsideparts[2]
+        if oppeningside == 4:
+            outsideparts[3][start] = 0
+            start = outsideparts[3]
+        possiblesides.remove(oppeningside)
 
-    if oppeningside == 1:
-        outsideparts[0][start] = 0
-        start = outsideparts[0]
-    if oppeningside == 2:
-        outsideparts[1][start] = 0
-        start = outsideparts[1]
-    if oppeningside == 3:
-        outsideparts[2][start] = 0
-        start = outsideparts[2]
-    if oppeningside == 4:
-        outsideparts[3][start] = 0
-        start = outsideparts[3]
-    possiblesides.remove(oppeningside)
+        oppeningside = random.choice(possiblesides)
+        if oppeningside == 1:
+            outsideparts[0][end] = 0
+            end = outsideparts[0]
+        if oppeningside == 2:
+            outsideparts[1][end] = 0
+            end = outsideparts[1]
+        if oppeningside == 3:
+            outsideparts[2][end] = 0
+            end = outsideparts[2]
+        if oppeningside == 4:
+            outsideparts[3][end] = 0
+            end = outsideparts[3]
 
-    oppeningside = random.choice(possiblesides)
-    if oppeningside == 1:
-        outsideparts[0][end] = 0
-        end = outsideparts[0]
-    if oppeningside == 2:
-        outsideparts[1][end] = 0
-        end = outsideparts[1]
-    if oppeningside == 3:
-        outsideparts[2][end] = 0
-        end = outsideparts[2]
-    if oppeningside == 4:
-        outsideparts[3][end] = 0
-        end = outsideparts[3]
-
+        if is_solvable(rows, collumns, outsideparts) == True:
+            break
+        if is_solvable(rows, collumns, outsideparts) == False:
+            gridsize(mazesize+1)
     drawmaze(rows, collumns, outsideparts)
-    #is_solvable(rows, collumns, start, end)
+
+
+
+
 
 def drawmaze(rows, collumns, sides):
     maze_maker = turtle.Turtle()

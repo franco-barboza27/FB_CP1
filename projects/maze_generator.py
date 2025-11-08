@@ -9,11 +9,11 @@ def gridsize(size):
     rows = []
     collumns = []
     outsideparts = [
-            # Top V
+            # bottom
                   [],
-                [],[], # <==top & bottom
+                [],[], # right, top
                   []
-           # side ^
+           # left
     ]
     for sides in outsideparts:
         tracker = 0
@@ -26,71 +26,122 @@ def gridsize(size):
         collumns.append([])
     mazegenerator(rows, collumns, outsideparts)
 
+def sidechecker(side):
+    for wall in side:
+        if wall == 0:
+            return True
+    return False
+
 def is_solvable(rows, collumns, sides):
     # needs to account for the new start coordinate each generation
 
     size = len(rows)
     visited = set()
     foundstart = []
-
+    curside = 0
     for side in sides:
-        for wall in side:
+        curwall = 0
+        while True:
             if foundstart:
-                if side.index() == 0:
+                if sides.index(side) == 0 and sidechecker(side) is True:
+                    i = 0
+                    for wall in side:
+                        i += 1
+                        if wall == 0:
+                            curwall = i
                     ey = 0
-                    ex = wall.index()
-                elif side.index() == 1:
-                    ey = wall.index()
+                    ex = curwall
+                elif sides.index(side) == 1 and sidechecker(side) is True:
+                    i = 0
+                    for wall in side:
+                        i += 1
+                        if wall == 0:
+                            curwall = i
+                    ey = curwall
                     ex = size
-                elif side.index() == 2:
+                elif sides.index(side) == 2 and sidechecker(side) is True:
+                    i = 0
+                    for wall in side:
+                        i += 1
+                        if wall == 0:
+                            curwall = i
                     ey = size
-                    ex = wall.index()
-                elif side.index() == 3:
+                    ex = curwall
+                elif sides.index(side) == 3 and sidechecker(side) is True:
+                    i = 0
+                    for wall in side:
+                        i += 1
+                        if wall == 0:
+                            curwall = i
                     ey = 0
-                    ex = wall.index()
-                continue
+                    ex = curwall
 
-            if index(0):
+                break
+
+            if curside == 0 and sidechecker(side) is True:
+                i = 0
+                for wall in side:
+                    i += 1
+                    if wall == 0:
+                        curwall = i
                 sy = 0
-                sx = wall.index()
-                foundstart.append(side.index())
-            elif side.index() == 1:
-                sy = wall.index()
+                sx = curwall
+                foundstart.append(side[0])
+            elif curside == 1 and sidechecker(side) is True:
+                i = 0
+                for wall in side:
+                    i += 1
+                    if wall == 0:
+                        curwall = i
+                sy = curwall
                 sx = size
-                foundstart.append(side.index())
-            elif side.index() == 2:
+                foundstart.append(side[1])
+            elif curside == 2 and sidechecker(side) is True:
+                i = 0
+                for wall in side:
+                    i += 1
+                    if wall == 0:
+                        curwall = i
                 sy = size
-                sx = wall.index()
-                foundstart.append(side.index())
-            elif side.index() == 3:
+                sx = curwall
+                foundstart.append(side[2])
+            elif curside == 3 and sidechecker(side) is True:
+                i = 0
+                for wall in side:
+                    i += 1
+                    if wall == 0:
+                        curwall = i
                 sy = 0
-                sx = wall.index()
-                foundstart.append(side.index())
+                sx = curwall
+                foundstart.append(side[3])
+            curwall +=1
+            break
+        curside += 1
 
     stack = [(sx, sy)]
 
     while stack:
-        x, y = stack.pop()
+        sx, sy = stack.pop()
 
-        if x == ex - 1 and y == ey -1:
+        if sx == ex - 1 and sy == ey -1:
             return True
         
-        if (x, y) in visited:
+        if (sx, sy) in visited:
             continue
 
-        visited.add((x,y))
+        visited.add((sx,sy))
 
-        if x < size - 1 and collumns[y][x+1] == 0:
-            stack.append((x,y+1))
+        if sx < size - 1 and collumns[sy][sx+1] == 0:
+            stack.append((sx,sy+1))
 
-        if y < size - 1 and rows[y+1][x] == 0:
-            stack.append((x,y+1))
+        if sy < size - 1 and rows[sy+1][sx] == 0:
+            stack.append((sx,sy+1))
 
-        if x > 0 and collumns[y][x] == 0:
-            stack.append((x-1,y))
+        if sx > 0 and collumns[sy][sx] == 0:
+            stack.append((sx-1,sy))
 
-        if y > 0 and rows[y][x] == 0:
-            stack.append((x,y-1))
+        if sy > 0 and rows[sy][sx] == 0:
+            stack.append((sx,sy-1))
 
     return False
 
@@ -145,9 +196,9 @@ def mazegenerator(rows, collumns, outsideparts):
             outsideparts[3][end] = 0
             end = outsideparts[3]
 
-        if is_solvable(rows, collumns, outsideparts) == True:
+        if is_solvable(rows, collumns, outsideparts) is True:
             break
-        if is_solvable(rows, collumns, outsideparts) == False:
+        if is_solvable(rows, collumns, outsideparts) is False:
             gridsize(mazesize+1)
     drawmaze(rows, collumns, outsideparts)
 

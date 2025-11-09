@@ -35,95 +35,111 @@ def sidechecker(side):
 def is_solvable(rows, collumns, sides):
     # needs to account for the new start coordinate each generation
 
-    size = len(rows)
+    rows.insert(0, sides[0])
+    rows.insert(len(rows), sides[2])
+    collumns.insert(0, sides[3])
+    collumns.insert(len(collumns), sides[1])
+
+    gridsize = len(rows)
+    size = len(rows)-2
     visited = set()
     foundstart = []
+    foundend = ""
     curside = 0
     for side in sides:
         curwall = 0
-        while True:
-            if foundstart:
-                if sides.index(side) == 0 and sidechecker(side) is True:
-                    i = 0
-                    for wall in side:
-                        i += 1
-                        if wall == 0:
-                            curwall = i
-                    ey = 0
-                    ex = curwall
-                elif sides.index(side) == 1 and sidechecker(side) is True:
-                    i = 0
-                    for wall in side:
-                        i += 1
-                        if wall == 0:
-                            curwall = i
-                    ey = curwall
-                    ex = size
-                elif sides.index(side) == 2 and sidechecker(side) is True:
-                    i = 0
-                    for wall in side:
-                        i += 1
-                        if wall == 0:
-                            curwall = i
-                    ey = size
-                    ex = curwall
-                elif sides.index(side) == 3 and sidechecker(side) is True:
-                    i = 0
-                    for wall in side:
-                        i += 1
-                        if wall == 0:
-                            curwall = i
-                    ey = 0
-                    ex = curwall
-
-                break
-
+        # checks where the ending and starting points are and saves them as a value
+        if foundstart:
+            # bottom side ending checker
             if curside == 0 and sidechecker(side) is True:
-                i = 0
+                i = -1
                 for wall in side:
                     i += 1
                     if wall == 0:
                         curwall = i
-                sy = 0
-                sx = curwall
-                foundstart.append(side[0])
+                ex, ey = curwall, 0
+                foundend = 1
+            # right side ending checker
             elif curside == 1 and sidechecker(side) is True:
-                i = 0
+                i = -1
                 for wall in side:
                     i += 1
                     if wall == 0:
                         curwall = i
-                sy = curwall
-                sx = size
-                foundstart.append(side[1])
+                ex, ey = size, curwall
+                foundend = 1
+            # top ending checker
             elif curside == 2 and sidechecker(side) is True:
-                i = 0
+                i = -1
                 for wall in side:
                     i += 1
                     if wall == 0:
                         curwall = i
-                sy = size
-                sx = curwall
-                foundstart.append(side[2])
+                ex, ey = curwall, size
+                foundend = 1
+            # left ending checker
             elif curside == 3 and sidechecker(side) is True:
-                i = 0
+                i = -1
                 for wall in side:
                     i += 1
                     if wall == 0:
                         curwall = i
-                sy = 0
-                sx = curwall
-                foundstart.append(side[3])
-            curwall +=1
+                ex, ey = curwall, 0
+                foundend = 1
+            curside += 1
+            continue
+
+        if foundend:
             break
+        
+        # bottom oppening checker
+        if curside == 0 and sidechecker(side) is True:
+            i = -1
+            for wall in side:
+                i += 1
+                if wall == 0:
+                    curwall = i
+            sx, sy = curwall, 0
+            foundstart.append(side[0])
+        # right oppening checker
+        elif curside == 1 and sidechecker(side) is True:
+            i = -1
+            for wall in side:
+                i += 1
+                if wall == 0:
+                    curwall = i
+            sx, sy = size, curwall
+            foundstart.append(side[1])
+        # top oppening checker
+        elif curside == 2 and sidechecker(side) is True:
+            i = -1
+            for wall in side:
+                i += 1
+                if wall == 0:
+                    curwall = i
+            sx, sy = curwall, size
+            foundstart.append(side[2])
+        # left oppening checker
+        elif curside == 3 and sidechecker(side) is True:
+            i = -1
+            for wall in side:
+                i += 1
+                if wall == 0:
+                    curwall = i
+            sx, sy = curwall, 0
+            foundstart.append(side[3])
         curside += 1
 
     stack = [(sx, sy)]
 
     while stack:
         sx, sy = stack.pop()
-
-        if sx == ex - 1 and sy == ey -1:
+        # checks if the maze is solvable and re-randomizes it if it's not
+        if sx == ex and sy == ey:
+            collumns.pop(0)
+            rows.pop(0)
+            collumns.pop(len(collumns)-1)
+            rows.pop(len(rows)-1)
             return True
         
         if (sx, sy) in visited:
@@ -131,29 +147,29 @@ def is_solvable(rows, collumns, sides):
 
         visited.add((sx,sy))
 
-        if sx < size - 1 and collumns[sy][sx+1] == 0:
-            stack.append((sx,sy+1))
-
-        if sy < size - 1 and rows[sy+1][sx] == 0:
-            stack.append((sx,sy+1))
-
+        # right wall checker
+        if sx < size - 1 and collumns[sy][sx + 1] == 0:
+            stack.append((sx + 1, sy))
+        # below wall checker
+        if sy < size - 1 and rows[sy + 1][sx] == 0:
+            stack.append((sx, sy + 1))
+        # left wall checker
         if sx > 0 and collumns[sy][sx] == 0:
-            stack.append((sx-1,sy))
-
+            stack.append((sx - 1, sy))
+        # above wall checker
         if sy > 0 and rows[sy][sx] == 0:
-            stack.append((sx,sy-1))
+            stack.append((sx, sy - 1))
 
     return False
 
 def mazegenerator(rows, collumns, outsideparts):
     while True:
         mazesize = len(rows)
-        
+        # randomizes the walls of the collumns and rows
         rowwy = 0
         for row in rows:
             everyline = 0
             while everyline in range(0, mazesize+1):
-                #looping infinitely currently
                 upwall = random.randint(0,1)
                 collumns[rowwy].append(upwall)
                 sidewall = random.randint(0,1)
@@ -198,7 +214,7 @@ def mazegenerator(rows, collumns, outsideparts):
 
         if is_solvable(rows, collumns, outsideparts) is True:
             break
-        if is_solvable(rows, collumns, outsideparts) is False:
+        else:
             gridsize(mazesize+1)
     drawmaze(rows, collumns, outsideparts)
 
@@ -210,14 +226,23 @@ def drawmaze(rows, collumns, sides):
     maze_maker = turtle.Turtle()
     maze_maker.speed(0)
     maze_maker.penup()
-    size = len(rows)+1
+    size = len(rows)-1
     startx = size * -50
     starty = size * -50
     maze_maker.teleport(startx, starty)
-    print(maze_maker.position())
 
     # draw the sides
+    poskeeper = 0
     for side in sides:
+        if poskeeper == 1:
+            maze_maker.left(90)
+        elif poskeeper == 2:
+            toplefty = maze_maker.ycor()
+            maze_maker.teleport(startx,toplefty)
+            maze_maker.right(90)
+        elif poskeeper == 3:
+            maze_maker.teleport(startx, toplefty)
+            maze_maker.right(90)
         for wall in side:
             if wall == 0:
                 maze_maker.penup()
@@ -225,14 +250,18 @@ def drawmaze(rows, collumns, sides):
             if wall == 1:
                 maze_maker.pendown()
                 maze_maker.forward(50)
-        maze_maker.left(90)
+                maze_maker.penup()
+        poskeeper += 1
+            
 
+
+    maze_maker.left(90)
     i = 0
 
     for row in rows:
         
         i += 1
-        maze_maker.teleport(startx, starty+i*50)
+        maze_maker.teleport(startx, starty+(i*50))
         for wall in row:
             if wall == 0:
                 maze_maker.penup()
@@ -247,7 +276,7 @@ def drawmaze(rows, collumns, sides):
     for collumn in collumns:
         
         i += 1
-        maze_maker.teleport(startx+i*50, starty)
+        maze_maker.teleport(startx + (i*50), starty)
         for wall in collumn:
             if wall == 0:
                 maze_maker.penup()
@@ -259,7 +288,6 @@ def drawmaze(rows, collumns, sides):
 
 
     turtle.done()
-    pass
 
 while True:
     sizeask = int(input("What size of maze do you want?"))

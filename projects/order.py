@@ -36,9 +36,9 @@ print(f"{i}) None")
 
 # checks if it's a valid choice for the drink
 while True:
-    drinkc = input("Which would you like?1-4:\n")
+    drinkc = input("Which would you like?1-5:\n")
     if drinkc.isnumeric():
-        if int(drinkc) <= 0 or int(drinkc) >=5:
+        if int(drinkc) <= 0 or int(drinkc) >=6:
             print("'Sorry I didn't quite catch that. What did you say?'(maybe try a number in the list I JUST gave you.)")
         else:
             break
@@ -64,9 +64,9 @@ print(f"{i}) None")
 
 # checks if it's a valid choice for the course
 while True:
-    coursec = input("Which would you like?1-4:\n")
+    coursec = input("Which would you like?1-5:\n")
     if coursec.isnumeric():
-        if int(coursec) <= 0 or int(coursec) >=5:
+        if int(coursec) <= 0 or int(coursec) >=6:
             print("'Sorry I didn't quite catch that. What did you say?'\n(maybe try a number in the list I JUST gave you.)")
         else:
             break
@@ -88,16 +88,34 @@ while sidenum in range(1,3):
 
     # checks if it's a valid choice for the course
     while True:
-        sidec = input("Which would you like?1-4:\n")
+        sidec = input("Which would you like?1-5:\n")
         if sidec.isnumeric():
-            if int(sidec) <= 0 or int(sidec) >=5:
+            if int(sidec) <= 0 or int(sidec) >=6:
                 print("'Sorry I didn't quite catch that. What did you say?'\n(maybe try a number in the list I JUST gave you.)")
             else:
                 break
         else:
             print("'Uhhh... That's not a number... could you repeat that?'")
+    side = menu_converter(sidec, menu[2])
+    order.append(side)
     sidenum += 1
+
+print("Moments later your food arrives, looking as good as you imagined")
+
 # when checking the price,
-    # if price is zero be like "get out of my restaraunt!"
+indextracker = -1
+total = 0
+for fooditem in order:
+    if indextracker != 2:
+        indextracker += 1
+    if fooditem in menu[indextracker]:
+        print(f"{fooditem}: {menu[indextracker][fooditem]:.2f} R")
+        total += menu[indextracker][fooditem]
+    
     # otherwise be fine and give them their total
         # also dont even print anything if they order "None"
+# if price is zero be like "get out of my restaraunt!"
+if total == 0:
+    print(f"Your total is {total} R. You're wasting my time!\n Get out of my resuaraunt!!!!")
+elif total > 0:
+    print(f"Your total will be {total} R.")

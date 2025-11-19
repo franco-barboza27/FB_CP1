@@ -5,23 +5,14 @@ for i in range(1, 6):
     if i in range(1, 6):
         print(i)
 
-
 list = [1, 6, 9, 14, 3, 6598, 1, 3, 68, 2, 268]
 
 print(max(list))
 print(min(list))
 
-
 err = 3 + "5"
 
 print(err)
-
-
-
-
-
-
-
 
 print("test")
 

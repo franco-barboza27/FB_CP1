@@ -32,9 +32,9 @@ if __name__ == "__main__":
             else:
                 num = 1
                 total = 0
-                for x in range(user_inp):
+                for x in range(1, user_inp+1):
                     num = multiply(num, x)
-                    total += num
+                total = num
                 print(f"{user_inp}! is equal to {num}")
             # else: 
                 # num = 1

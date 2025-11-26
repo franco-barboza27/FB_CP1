@@ -1,5 +1,8 @@
 # FB 1st codespace stuff
 import time as t
+num = 90
+for i in range(num):
+    print(i)
 
 for i in range(1, 6):
     if i in range(1, 6):

@@ -20,11 +20,31 @@
                     # combat loop:
                         # if they die, go back to the loop before by breaking this one
                         # if they win, go to the correct function
-        # most easy to do methods of storage
+        # possible data types for easy storage
             # LISTS, DICTIONARIES and CLASSES
-                # Lists
                     # Allow me to store multiple values of different kinds
-                        # possible ways
+                        # possible specific ways
                             # player list = ["name", skills{1stskill:exp req, ...}, stats[val1/valtot, val2/valtot, val3/valtot], items[item1{things abt item}]]
                                 # skills would need a function to tell more things about the skill
                                 # items that are more complicated than just a stat change may require a different kind of storage
+                            # player list = {name:"name", inventory:[stuff], health:100, speed:10, }...
+                                # items become less specific
+                                # I'd need a function for both items and skills
+        # Chosen
+            # player = [{stats-name:statamount}, {statmax-name:maximum}, {skillscost-name:skillcost}, [skillsdesc], {items-name:desc}]
+                # This way its all stored in one place although I'll have to use a function to do the correct thing on skills and items
+
+    # 3) this one gets taken care of with the in player list dict, I'll need to make a function that checks what item it is, do the effect and then remove the item from the inventory
+        # items FUNCTION
+            # itemsuse(item choice, player)
+                # check each individual item, manually
+                # the dots are for specific actions that the item does
+                # ex, one may be player[0]["stat"] += 10
+                # for a complicated one like the (planned) cheat sheet it could 
+                    # if item choice == specific item:
+                        # ...
+                    # elif...
+                        # ...
+                    # elif...
+
+                    

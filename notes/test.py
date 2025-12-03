@@ -1,5 +1,17 @@
 # FB 1st codespace stuff
 import time as t
+
+testlst = [{"val":1, "thing":3, "bloop":50}, ["This is a value it costs 1 dolla", "This is a thing it costs 3 dolla", "This is a bloop it costs 50 dolla"]]
+
+count = 0
+for item in testlst[0]:
+    print(f"{item}:\n{testlst[1][count]}")
+    count += 1
+
+
+
+
+
 num = 90
 for i in range(num):
     print(i)

@@ -6,7 +6,7 @@
     # 3) Make an inventory that is kept track of and can be accessed from most places
     # 4) implement two different fighting systems that change based on choice at beginning of the game
 # Later priorities
-    # 5) Tun and Non fight
+    # 5) Tun and Nan fight
     # 6.1) Figure out the test fights (Math, Chem and history)
     # 6.2) Figure out the dream fights
     # 7) Figure out the final fight
@@ -14,17 +14,23 @@
     # 8) Balancing
     # 9) Dialog improvement
 
-# POSSIBLE METHODS
+# POSSIBLE METHODS FOR 1)-4)
     # 1) 
         # I could make functions for each of the rooms and basically do something similar to my combat program 
         # where each function could lead to a different function
-        # Each room will be very similar (code-wise) in code except for ones that have combat encounter
+        # Each room will be very similar in code except for ones that have a combat encounter
             # room name(take Player as parameter)
                 # make a menu that presents their options (ex: 1) Check desk 2) make coffee 3) Go outside
                 # depending on that choice, execute whatever dialog needed, and if they're going to a new room, start the function for that room
                 # otherwise, inspect/do whatever thing they chose
-                    # if they get an item, mark it as gotten 
-                    |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+                    # if they get an item from their action: 
+                        # put it into their inventory and into their "collected items" 
+                        # before that though, check if they already have the item in their collected items list or not
+                    # if it's just dialog:
+                        # print the dialog
+                    # if they leave the room:
+                        # call the function for the room they go to
+                    # if they encounter COMBAT go to 4)-7)
     # 2)
         # I need to hold stats, items, and skills inside of 
         # or with a player variable (and maybe a name as well?)
@@ -51,9 +57,10 @@
                                 # I'd need a function for both items and skills
         # Chosen
             # player = [{state-state:alive/dead}, {stats-name:statamount}, {statmax-name:maximum}, {skillscost-name:skillcost}, 
-            # [skillsdesc], {items-name:desc}]
+            # [skillsdesc], {items-name:desc}, [collected items-itemname]]
+            # ("-" seperates what the thing holds and how it'll be formatted)
                 # This way its all stored in one place although I'll have to use a function to do the correct thing on skills and items
-                    # testing a way to get desctiptions of things and their values:
+                    # testing a way to get desctiptions of things and their values (it works, if the things are in the same locations):
 
                             # testlst = [{"val":1, "thing":3, "bloop":50}, ["This is a value it costs 1 dolla", "This is a thing it costs 3 dolla", "This is a bloop it costs 50 dolla"]]
 
@@ -86,4 +93,21 @@
                             # Outside of the function, check if they used cheat sheet, then check if it returned as player being dead- if not do that much damage to the test
     # 4) 
     # In the dream world fighting can be done like the combat program where each entity got their own function for their turn.
-    # Since in the real world, the tests dont fight back, it could just be one function with a loop checking if the player state is dead or if the test state is finished and at the end of each turn it does whatever amount of groginess
+    # Since in the real world, the tests dont fight back, it could just be one function with a loop checking if the player state is "dead"
+    # or, if the test state is finished then, at the end of each turn it does whatever amount of groginess if neither is true
+
+# 5)-7)
+
+    # 5) The Tun and Nan fight
+        # To begin, in this room the user will have the choice to either choose Tun or Nan after some dialog
+            # have an if statement checking if they have a world route
+            # after they choose, set the world route to whatever route they chose
+            # 
+
+    # 6.1
+        # 6.1.0) Fight format (general code for all three fights)
+            #
+        # 6.1.1) math fight
+            # for the debuff I can make an if statement checking if the debuff is false (0) then if it is false give them their turn
+                # at the end of each turn, roll to see if they got the debuff and set it to a number (that makes sense )
+            

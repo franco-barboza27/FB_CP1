@@ -1,18 +1,19 @@
 # FB TBAG final
 
 # BIGGEST PRIORITITIES
-    # 1) Make Rooms and menus for each room (action selections to interact with things)
+    # 1) Make Rooms and menus for each room (action selections to interact with things) (aim to create modular room functions that require very minimal fundamental code changes from room to room(modular))
     # 2) Make a player variable that I can keep track of across rooms without using global but also permanently change however I need
     # 3) Make an inventory that is kept track of and can be accessed from most places
     # 4) implement two different fighting systems that change based on choice at beginning of the game
 # Later priorities
-    # 5) Tun and Nan fight
-    # 6.1) Figure out the test fights (Math, Chem and history)
-    # 6.2) Figure out the dream fights
-    # 7) Figure out the final fight
-# Least prioritie-ish
-    # 8) Balancing
-    # 9) Dialog improvement
+    # 5) Skills function
+    # 6) Tun and Nan fight
+    # 7) Figure out the test fights (Math, Chem and history)
+    # 8) Figure out the dream fights
+    # 9) Figure out the final fight
+# Least priority-ish
+    # ) Balancing
+    # ) Dialog improvement
 
 # POSSIBLE METHODS FOR 1)-4)
     # 1) 
@@ -24,12 +25,12 @@
                 # depending on that choice, execute whatever dialog needed, and if they're going to a new room, start the function for that room
                 # otherwise, inspect/do whatever thing they chose
                     # if they get an item from their action: 
-                        # put it into their inventory and into their "collected items" 
+                        # put it into their inventory and into their "collected items" (expanded on slightly in 2))
                         # before that though, check if they already have the item in their collected items list or not
                     # if it's just dialog:
                         # print the dialog
                     # if they leave the room:
-                        # call the function for the room they go to
+                        # call the function for the room they go to with whatever needed arguments
                     # if they encounter COMBAT go to 4)-7)
     # 2)
         # I need to hold stats, items, and skills inside of 
@@ -55,8 +56,8 @@
                             # player list = {name:"name", inventory:[stuff], health:100, speed:10, }...
                                 # items become less specific
                                 # I'd need a function for both items and skills
-        # Chosen
-            # player = [{state-state:alive/dead}, {stats-name:statamount}, {statmax-name:maximum}, {skillscost-name:skillcost}, 
+        # Chosen (may be tweaked a little bit but this should be what it roughly looks like)
+            # player = [{state-state:alive/dead, level:num, exp:num}, {stats-name:statamount}, {statmax-name:maximum}, {skillscost-name:skillcost}, 
             # [skillsdesc], {items-name:desc}, [collected items-itemname]]
             # ("-" seperates what the thing holds and how it'll be formatted)
                 # This way its all stored in one place although I'll have to use a function to do the correct thing on skills and items
@@ -101,13 +102,18 @@
     # 5) The Tun and Nan fight
         # To begin, in this room the user will have the choice to either choose Tun or Nan after some dialog
             # have an if statement checking if they have a world route
+            # if not, ask them something like "Do you want to choose Tun's side or Nan's side?"
             # after they choose, set the world route to whatever route they chose
-            # 
-
-    # 6.1
-        # 6.1.0) Fight format (general code for all three fights)
+            # Then, check which route they chose and use the corresponding battle function with the corresponding battle
+                # Tun and Non battle function should take the player as a parameter
+    # 6)
+        # 6.0\) Fight format (general code for all three fights)
             #
-        # 6.1.1) math fight
-            # for the debuff I can make an if statement checking if the debuff is false (0) then if it is false give them their turn
-                # at the end of each turn, roll to see if they got the debuff and set it to a number (that makes sense )
-            
+            # 6.0.1) math fight
+                # for the debuff I can make an if statement checking if the debuff is false (0) then if it is false give them their turn (because the debuff skips turns and gives them sleepiness)
+                    # at the end of each turn, roll to see if they got the debuff and set it to a number (that makes sense, too many would be OP)
+    # 7)
+    # 8)
+    # Depends on how things go V
+    # 9)
+    # 10)

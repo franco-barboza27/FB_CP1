@@ -2,16 +2,17 @@
 import time as t
 
 def funcex(numericalval):
-    plusone = numericalval +1
-    newnum = functex(plusone)
+    numericalval = numericalval +1
+    newnum = functex(numericalval)
 
-    return plusone, newnum
+    return numericalval, newnum
 
 def functex(numberval):
     numberval += 1
     return numberval
 
-print(funcex(1))
+x = 1
+print(funcex(x))
 
 
 

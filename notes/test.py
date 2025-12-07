@@ -1,6 +1,42 @@
 # FB 1st codespace stuff
 import time as t
 
+def funcex(numericalval):
+    plusone = numericalval +1
+    newnum = functex(plusone)
+
+    return plusone, newnum
+
+def functex(numberval):
+    numberval += 1
+    return numberval
+
+print(funcex(1))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+runningoutofvariablenames = (1, 2, 4, 5)
+
+runningoutofvariablenames = int(runningoutofvariablenames[2])
+
+print(1+runningoutofvariablenames)
+
 testlst = [{"val":1, "thing":3, "bloop":50}, ["This is a value it costs 1 dolla", "This is a thing it costs 3 dolla", "This is a bloop it costs 50 dolla"]]
 
 count = 0
@@ -12,7 +48,7 @@ for item in testlst[0]:
 
 
 
-num = 90
+num = 10
 for i in range(num):
     print(i)
 
@@ -24,10 +60,11 @@ list = [1, 6, 9, 14, 3, 6598, 1, 3, 68, 2, 268]
 
 print(max(list))
 print(min(list))
-
-err = 3 + "5"
-
-print(err)
+try:
+    err = 3 + "5"
+    print(err)
+except:
+    print("error occured, cont")
 
 print("test")
 

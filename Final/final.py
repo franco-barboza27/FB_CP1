@@ -81,8 +81,44 @@ def cave():
 def deeper_cave():
     pass
 
-def RW_items():
-    pass
+def RW_items(queleft, player):
+    
+    count = 1
+    for specitem in player["inventory"].keys():
+        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
+
+    while True:
+        itemch = input(f"What item would you like to choose? 1~{count}:\n")
+        try:
+            itemch = int(itemch)
+            if itemch in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    inventorylist = list(player["inventory"].keys())
+    item = inventorylist[itemch]
+
+    if item == "coffee":
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+            
+    elif item == "energy drink":
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 2
+        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
+            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+
+    elif item == "candy bag":
+        player["stats"]["memory"] = player["stats"]["sleepiness"] + 3
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
 
 def DW_items():
     pass
@@ -140,9 +176,6 @@ def tun_fight(playerchar, tunlytun):
 
         turn += 1
         
-            
-
-
 def math_t():
     pass
 
@@ -160,8 +193,6 @@ def nan_fight(playerchar, nanlynan):
             contq = cont()
             if contq == True:
                 return "LOSS"
-            else:
-                sys.exit()
     
         if charmcount >= nanlynan[1]:
             return "WIN"
@@ -194,12 +225,22 @@ def nan_fight(playerchar, nanlynan):
 
         print(f"Your lucidity increased by {damage}!")
         playerchar["stats"]["lucidity"] = playerchar["stats"]["lucidity"] + damage
+
 def combat():
     pass
 
 def cont():
-    pass
-
+    print("You unfortunately failed...")
+    while True:
+        contq = input("Will you try again?Y/N")
+        if contq == "Y":
+            print("Very well, you decided to perservere.")
+            return True
+        elif contq == "N":
+            print("Ok then, unfortunately, you rage quitted.")
+            sys.exit()
+        else:
+            print("Sorry, is that an option I gave you?")
 def RW_route_parents():
     pass
 

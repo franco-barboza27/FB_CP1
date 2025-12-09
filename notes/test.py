@@ -1,6 +1,20 @@
 # FB 1st codespace stuff
 import time as t
 
+dictname = {"imbeded dictionary":{"key":"value", "otherkey":"other value", 10:953}}
+
+x = list(dictname["imbeded dictionary"].keys())
+
+count = 1
+for specitem in dictname["imbeded dictionary"].keys():
+        print(f"{count}) {specitem} : {dictname["imbeded dictionary"][specitem]}")
+
+print(x)
+
+print(f"{x[0]}, {x[1]}, {x[2]}")
+
+
+
 def funcex(numericalval):
     numericalval = numericalval +1
     newnum = functex(numericalval)
@@ -49,7 +63,7 @@ for item in testlst[0]:
 
 
 
-num = 10
+num = 1
 for i in range(num):
     print(i)
 

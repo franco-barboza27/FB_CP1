@@ -20,7 +20,7 @@ def startup_room():
                   "usable items":{"coffee":"decreases sleepiness by 10", "cheat sheet":"when you use the cheat sheet you answer a random amount of questions with a random chance of getting caught-losing the battle",
                                   "energy drink":"gives you 2 adrenaline and -15 sleepiness", "candy bag":"gives you 3 memory", "burrito":"decreases sleep by 10 and increases adrenaline by 3"},
                   "skills":{},
-                  "unacquired skills":{"Random recollection":"costs 5 adrenaline, you do 10 questions", "Save the hardest for last":"costs 2 adrenaline, you do 4 questions", "Guess":"costs 2 adrenaline, answer 2 questions, don't gain sleep."},
+                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 10 questions", "save the hardest for last":"costs 2 adrenaline, you do 4 questions", "guess":"costs 2 adrenaline, answer 2 questions, don't gain sleep."},
                   }
 
         winlossrw = tun_fight(player, tun)
@@ -31,10 +31,10 @@ def startup_room():
                   "statmax":{"lucidity":50, "social battery":10},
                   "inventory":{},
                   "Collected items":{},
-                  "usable items":{"Sleep tea":"decreases lucidity by 10", "Big rock":"-20 lucidity",
-                                  "Frying pan":"You make yourself eggs--you recharge 5 social batter", "Portable sound proof chamber":"recharge 5 social batter"},
+                  "usable items":{"sleep tea":"decreases lucidity by 10", "big rock":"-20 lucidity",
+                                  "frying pan":"You make yourself eggs--you recharge 5 social batter", "PSPC":"recharge 10 social batter"},
                   "skills":{},
-                  "unacquired skills":{"Heart-Breaking Lie":"costs 5 social battery and does 10 charm", "Puppy dog eyes":"Costs 2 social batter, does 2 charm", "Disassociate":"gain 3 social battery, skip a turn"}, 
+                  "unacquired skills":{"dramatic lie":"costs 5 social battery and does 10 charm", "puppy dog eyes":"Costs 2 social batter, does 2 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
                   "battles":[]
                   }
         winlossdr = nan_fight(player, nan)
@@ -82,10 +82,11 @@ def deeper_cave():
     pass
 
 def RW_items(queleft, player):
-    
+    # ADD FLAVOR TEXT
     count = 1
     for specitem in player["inventory"].keys():
         print(f"{count}) {specitem} : {player["inventory"][specitem]}")
+        count += 1
 
     while True:
         itemch = input(f"What item would you like to choose? 1~{count}:\n")
@@ -136,13 +137,80 @@ def RW_items(queleft, player):
         else:
             damage = random.randint(5, 10)
             queleft = queleft - damage
+    
+    return queleft, player
 
 
-def DW_items():
-    pass
+def DW_items(chcount, player):
+    # ADD FLAVOR TEXT
+    count = 1
+    for specitem in player["inventory"].keys():
+        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
+        count += 1
 
-def RW_skills():
-    pass
+    while True:
+        itemch = input(f"What item would you like to choose? 1~{count}:\n")
+        try:
+            itemch = int(itemch)
+            if itemch in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    inventorylist = list(player["inventory"].keys())
+    item = inventorylist[itemch]
+
+    if item == "sleep tea":
+        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 10
+        if player["stats"]["lucidity"] < 0:
+            player["stats"]["lucidity"] = 0
+            
+    elif item == "big rock":
+        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 20
+        if player["stats"]["lucidity"] < 0:
+            player["stats"]["lucidity"] = 0
+
+    elif item == "frying pan":
+        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
+        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
+            player["stats"]["social battery"] = player["statmax"]["social battery"]
+    elif item == "PSPC":
+        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
+        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
+            player["stats"]["social battery"] = player["statmax"]["social battery"]
+    
+    return player
+
+def RW_skills(queleft, player):
+    count = 1
+    for specskill in player["skills"].keys():
+        print(f"{count}) {specskill} : {player["skills"][specskill]}")
+        count += 1
+
+    while True:
+        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
+        try:
+            sklcho = int(sklcho)
+            if sklcho in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    skilllist = list(player["skills"].keys())
+    skill = skilllist[sklcho]
+
+    if skill == "random recollection" and player["stats"]["adrenaline"] >= 5:
+    
+    elif skill == "save the hardest for last" and player["stats"]["adrenaline"] >= 2:
+    
+    elif skill == "guess" and player["stats"]["adrenaline"] >= 2:
+
 
 def DW_skills():
     pass

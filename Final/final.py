@@ -116,9 +116,27 @@ def RW_items(queleft, player):
             player["stats"]["sleepiness"] = 0
 
     elif item == "candy bag":
-        player["stats"]["memory"] = player["stats"]["sleepiness"] + 3
+        player["stats"]["memory"] = player["stats"]["memory"] + 3
+        if player["stats"]["memory"] > player["statmax"]["memory"]:
+            player["stats"]["memory"] = player["statmax"]["memory"]
+    
+    elif item == "burrito":
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 4
+        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
+            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 7
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
+
+    elif item == "cheat sheet":
+        caughtq = random.randint(1, 10)
+        if caughtq == 1:
+            print("You got caught! Whelp, guess you lost :c")
+            player["stats"]["sleepiness"] = player["statmax"]["sleepiness"]
+        else:
+            damage = random.randint(5, 10)
+            queleft = queleft - damage
+
 
 def DW_items():
     pass
@@ -241,6 +259,7 @@ def cont():
             sys.exit()
         else:
             print("Sorry, is that an option I gave you?")
+
 def RW_route_parents():
     pass
 

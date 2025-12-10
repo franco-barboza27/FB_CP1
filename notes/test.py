@@ -6,30 +6,26 @@ dictname = {"imbeded dictionary":{"key":"value", "otherkey":"other value", 10:95
 x = list(dictname["imbeded dictionary"].keys())
 
 count = 1
-for specitem in dictname["imbeded dictionary"].keys():
+def imbededdictsundoer(diction):
+    for specitem in dictname["imbeded dictionary"].keys():
         print(f"{count}) {specitem} : {dictname["imbeded dictionary"][specitem]}")
-
-print(x)
-
-print(f"{x[0]}, {x[1]}, {x[2]}")
-
-
+    
+    dictname["imbeded dictionary"][specitem] = funcex(int(dictname["imbeded dictionary"][specitem]))[1]
+    print(dictname["imbeded dictionary"][specitem])
 
 def funcex(numericalval):
     numericalval = numericalval +1
     newnum = functex(numericalval)
-
-    return numericalval, newnum
+    return newnum, numericalval
 
 def functex(numberval):
     numberval += 1
-    return numberval
 
 x = 1
 print(funcex(x))
 
 
-
+imbededdictsundoer(dictname)
 
 
 

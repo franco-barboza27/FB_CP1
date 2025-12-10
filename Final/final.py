@@ -206,9 +206,11 @@ def RW_skills(queleft, player):
     skill = skilllist[sklcho]
 
     if skill == "random recollection" and player["stats"]["adrenaline"] >= 5:
-    
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 5
+        queleft = queleft - 10
     elif skill == "save the hardest for last" and player["stats"]["adrenaline"] >= 2:
-    
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 2
+        queleft = queleft - 2
     elif skill == "guess" and player["stats"]["adrenaline"] >= 2:
 
 

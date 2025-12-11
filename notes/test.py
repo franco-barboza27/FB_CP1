@@ -1,11 +1,27 @@
 # FB 1st codespace stuff
-import time as t
+import time as t, random as r
 
-dictname = {"imbeded dictionary":{"key":"value", "otherkey":"other value", 10:953}}
+listname = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+dictname = {"imbeded dictionary":{}, "otherimbededdict":{"key":"SUPER cool value", "otherkey":"super UNCOOL value", 10:"nine-hundred fifty-three"}}
+
+print(r.choice(list(dictname["otherimbededdict"].keys())))
+
+newskill = r.choice(list(dictname["otherimbededdict"].keys()))
+
+dictname["imbeded dictionary"][newskill] = dictname["otherimbededdict"][newskill]
+
+print(f"You got the {newskill} skill!")
+print(f"{newskill}: {dictname["otherimbededdict"][newskill]}")
 
 x = list(dictname["imbeded dictionary"].keys())
 
 count = 1
+
+for speckey in dictname["imbeded dictionary"]:
+    print(f"{speckey} : {dictname['imbeded dictionary'][speckey]}")
+    dictname["imbeded dictionary"][speckey] = dictname["otherimbededdict"][speckey]
+    print(f"{speckey} : {dictname['imbeded dictionary'][speckey]}")
+
 def imbededdictsundoer(diction):
     for specitem in dictname["imbeded dictionary"].keys():
         print(f"{count}) {specitem} : {dictname["imbeded dictionary"][specitem]}")

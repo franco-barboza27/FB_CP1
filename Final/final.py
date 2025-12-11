@@ -20,21 +20,22 @@ def startup_room():
                   "usable items":{"coffee":"decreases sleepiness by 10", "cheat sheet":"when you use the cheat sheet you answer a random amount of questions with a random chance of getting caught-losing the battle",
                                   "energy drink":"gives you 2 adrenaline and -15 sleepiness", "candy bag":"gives you 3 memory", "burrito":"decreases sleep by 10 and increases adrenaline by 3"},
                   "skills":{},
-                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 10 questions", "save the hardest for last":"costs 2 adrenaline, you do 4 questions", "guess":"costs 2 adrenaline, answer 2 questions, don't gain sleep."},
+                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 10 questions", "save the hardest for last":"costs 2 adrenaline, you do 3 questions", "guess":"costs 2 adrenaline, answer 2 questions, gain reduced sleep."},
                   }
 
         winlossrw = tun_fight(player, tun)
         winlossdr = False
     elif wrldr == "2":
         player = {"state":{"alive":True},
-                  "stats":{"lucidity":0, "social battery":10, "charm":10, "imagination":0},
+                  "stats":{"lucidity":0, "social battery":10},
                   "statmax":{"lucidity":50, "social battery":10},
+                  "miscish stats":{"charm":5, "imagination":0},
                   "inventory":{},
                   "Collected items":{},
                   "usable items":{"sleep tea":"decreases lucidity by 10", "big rock":"-20 lucidity",
                                   "frying pan":"You make yourself eggs--you recharge 5 social batter", "PSPC":"recharge 10 social batter"},
                   "skills":{},
-                  "unacquired skills":{"dramatic lie":"costs 5 social battery and does 10 charm", "puppy dog eyes":"Costs 2 social batter, does 2 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
+                  "unacquired skills":{"dramatic lie":"costs 10 social battery and does 30 charm", "puppy dog eyes":"Costs 2 social batter, does 7 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
                   "battles":[]
                   }
         winlossdr = nan_fight(player, nan)
@@ -79,142 +80,6 @@ def cave():
     pass
 
 def deeper_cave():
-    pass
-
-def RW_items(queleft, player):
-    # ADD FLAVOR TEXT
-    count = 1
-    for specitem in player["inventory"].keys():
-        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
-        count += 1
-
-    while True:
-        itemch = input(f"What item would you like to choose? 1~{count}:\n")
-        try:
-            itemch = int(itemch)
-            if itemch in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            continue
-
-    inventorylist = list(player["inventory"].keys())
-    item = inventorylist[itemch]
-
-    if item == "coffee":
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
-        if player["stats"]["sleepiness"] < 0:
-            player["stats"]["sleepiness"] = 0
-            
-    elif item == "energy drink":
-        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 2
-        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
-            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
-        if player["stats"]["sleepiness"] < 0:
-            player["stats"]["sleepiness"] = 0
-
-    elif item == "candy bag":
-        player["stats"]["memory"] = player["stats"]["memory"] + 3
-        if player["stats"]["memory"] > player["statmax"]["memory"]:
-            player["stats"]["memory"] = player["statmax"]["memory"]
-    
-    elif item == "burrito":
-        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 4
-        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
-            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 7
-        if player["stats"]["sleepiness"] < 0:
-            player["stats"]["sleepiness"] = 0
-
-    elif item == "cheat sheet":
-        caughtq = random.randint(1, 10)
-        if caughtq == 1:
-            print("You got caught! Whelp, guess you lost :c")
-            player["stats"]["sleepiness"] = player["statmax"]["sleepiness"]
-        else:
-            damage = random.randint(5, 10)
-            queleft = queleft - damage
-    
-    return queleft, player
-
-
-def DW_items(chcount, player):
-    # ADD FLAVOR TEXT
-    count = 1
-    for specitem in player["inventory"].keys():
-        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
-        count += 1
-
-    while True:
-        itemch = input(f"What item would you like to choose? 1~{count}:\n")
-        try:
-            itemch = int(itemch)
-            if itemch in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            continue
-
-    inventorylist = list(player["inventory"].keys())
-    item = inventorylist[itemch]
-
-    if item == "sleep tea":
-        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 10
-        if player["stats"]["lucidity"] < 0:
-            player["stats"]["lucidity"] = 0
-            
-    elif item == "big rock":
-        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 20
-        if player["stats"]["lucidity"] < 0:
-            player["stats"]["lucidity"] = 0
-
-    elif item == "frying pan":
-        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
-        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
-            player["stats"]["social battery"] = player["statmax"]["social battery"]
-    elif item == "PSPC":
-        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
-        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
-            player["stats"]["social battery"] = player["statmax"]["social battery"]
-    
-    return player
-
-def RW_skills(queleft, player):
-    count = 1
-    for specskill in player["skills"].keys():
-        print(f"{count}) {specskill} : {player["skills"][specskill]}")
-        count += 1
-
-    while True:
-        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
-        try:
-            sklcho = int(sklcho)
-            if sklcho in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            continue
-
-    skilllist = list(player["skills"].keys())
-    skill = skilllist[sklcho]
-
-    if skill == "random recollection" and player["stats"]["adrenaline"] >= 5:
-        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 5
-        queleft = queleft - 10
-    elif skill == "save the hardest for last" and player["stats"]["adrenaline"] >= 2:
-        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 2
-        queleft = queleft - 2
-    elif skill == "guess" and player["stats"]["adrenaline"] >= 2:
-
-
-def DW_skills():
     pass
 
 def tun_fight(playerchar, tunlytun):
@@ -314,8 +179,245 @@ def nan_fight(playerchar, nanlynan):
         print(f"Your lucidity increased by {damage}!")
         playerchar["stats"]["lucidity"] = playerchar["stats"]["lucidity"] + damage
 
-def combat():
+def combat(enemy, player):
+    charmcount = 0
+    disassociate = 0
+
+    while True:
+        if player["stats"]["lucidity"] <= player["statmax"]["lucidity"]:
+            contq = cont()
+            if contq == True:
+                return "LOSS"
+        elif enemy[1] <= charmcount:
+            player["battle"] = player["battles"].append(enemy[0])
+            player["miscish stats"]["imagination"] = player["miscish stats"]["imagination"] + 1
+            if player["miscish stats"]["imagination"]//3 == 1:
+                playerupdate = levelup(player)
+                player = playerupdate
+            playerupdate = playerregen(player)
+            player = playerupdate
+            return
+
+def RW_route_parents():
     pass
+
+def DW_route_parents():
+    pass
+
+def levelup(player):
+    print("You gained enough imagination to level up!")
+    print("You will now get a random SKILL and a STAT BONUS of your choice")
+
+    newskill = random.choice(list(player["unacquired skills"].keys()))
+    player["skills"][newskill] = player["unacquired skills"][newskill]
+    del player["unacquired skills"][newskill]
+
+    print(f"You got the {newskill} skill!")
+    print(f"{newskill}: {player["skills"][newskill]}")
+
+    print("You may now choose a stat to upgrade by 5, 20 in the case of lucidity!")
+    while True:
+        statinc = input("Would you like to upgrade your:\n1) Charm\n2) Social Battery\n3) Lucidity Cap")
+        try:
+            statinc = int(statinc)
+            if statinc in range(1, 4):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+        
+    if statinc == 1:
+        player["miscstats"]["charm"] = player["miscstats"]["charm"] + 5
+        print(f"Your Charm increased by 5!")
+    elif  statinc == 2:
+        player["statmax"]["social battery"] = player["statmax"]["social battery"] + 5
+    elif  statinc == 3:
+        player["statmax"]["lucidity"] = player["statmax"]["lucidity"] + 5
+
+    return player
+
+def RW_items(queleft, player):
+    # ADD FLAVOR TEXT
+    count = 1
+    for specitem in player["inventory"].keys():
+        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
+        count += 1
+
+    while True:
+        itemch = input(f"What item would you like to choose? 1~{count}:\n")
+        try:
+            itemch = int(itemch)
+            if itemch in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    inventorylist = list(player["inventory"].keys())
+    item = inventorylist[itemch]
+
+    if item == "coffee":
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+            
+    elif item == "energy drink":
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 2
+        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
+            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+
+    elif item == "candy bag":
+        player["stats"]["memory"] = player["stats"]["memory"] + 3
+        if player["stats"]["memory"] > player["statmax"]["memory"]:
+            player["stats"]["memory"] = player["statmax"]["memory"]
+    
+    elif item == "burrito":
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 4
+        if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
+            player["stats"]["adrenaline"] = player["statmax"]["adrenaline"]
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 7
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+
+    elif item == "cheat sheet":
+        caughtq = random.randint(1, 10)
+        if caughtq == 1:
+            print("You got caught! Whelp, guess you lost :c")
+            player["stats"]["sleepiness"] = player["statmax"]["sleepiness"]
+        else:
+            damage = random.randint(5, 10)
+            queleft = queleft - damage
+    
+    return queleft, player
+
+def DW_items(player):
+    # ADD FLAVOR TEXT
+    count = 1
+    for specitem in player["inventory"].keys():
+        print(f"{count}) {specitem} : {player["inventory"][specitem]}")
+        count += 1
+
+    while True:
+        itemch = input(f"What item would you like to choose? 1~{count}:\n")
+        try:
+            itemch = int(itemch)
+            if itemch in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    inventorylist = list(player["inventory"].keys())
+    item = inventorylist[itemch]
+
+    if item == "sleep tea":
+        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 10
+        if player["stats"]["lucidity"] < 0:
+            player["stats"]["lucidity"] = 0
+            
+    elif item == "big rock":
+        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 20
+        if player["stats"]["lucidity"] < 0:
+            player["stats"]["lucidity"] = 0
+
+    elif item == "frying pan":
+        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
+        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
+            player["stats"]["social battery"] = player["statmax"]["social battery"]
+    elif item == "PSPC":
+        player["stats"]["social battery"] = player["stats"]["social battery"] + 5
+        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
+            player["stats"]["social battery"] = player["statmax"]["social battery"]
+    
+    return player
+
+def RW_skills(queleft, player):
+    # ADD FLAVOR TEXT!!!!!!
+    count = 1
+    for specskill in player["skills"].keys():
+        print(f"{count}) {specskill} : {player["skills"][specskill]}")
+        count += 1
+
+    while True:
+        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
+        try:
+            sklcho = int(sklcho)
+            if sklcho in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            continue
+
+    skilllist = list(player["skills"].keys())
+    skill = skilllist[sklcho]
+
+    if skill == "random recollection" and player["stats"]["adrenaline"] >= 5:
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 5
+        queleft = queleft - 10
+    elif skill == "save the hardest for last" and player["stats"]["adrenaline"] >= 2:
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 2
+        queleft = queleft - 3
+    elif skill == "guess" and player["stats"]["adrenaline"] >= 2:
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 1
+        queleft = queleft - 1
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+    
+    return queleft, player
+
+def DW_skills(charmco, player):
+    # ADD FLAVOR TEXT!!!!!!!!!!!1111!!!11!!!1!1
+    count = 1
+    dissassociate = 0
+    for specskill in player["skills"].keys():
+        print(f"{count}) {specskill} : {player["skills"][specskill]}")
+        count += 1
+
+    while True:
+        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
+        try:
+            sklcho = int(sklcho)
+            if sklcho in range(1, count+1):
+                break
+            else:
+                print("That's not an option :(")
+                continue
+        except ValueError:
+            print("That's not a number according to Python-sama, Sorry!")
+            continue
+
+    skilllist = list(player["skills"].keys())
+    skill = skilllist[sklcho]
+
+    if skill == "dramatic lie" and player["stats"]["social battery"] >= 10:
+        player["stats"]["social battery"] = player["stats"]["social battery"] - 10
+        charmco = charmco + 30
+    elif skill == "puppy dog eyes" and player["stats"]["social battery"] >= 2:
+        player["stats"]["social battery"] = player["stats"]["social battery"] - 2
+        charmco = charmco + 7
+    elif skill == "disassociate":
+        dissassociate = dissassociate + 1
+        player["stats"]["social battery"] = player["stats"]["social battery"] + 3
+        if player["stats"]["social battery"] < player["statmax"]["social battery"]:
+            player["stats"]["social battery"] = player["statmax"]["social battery"]
+    
+    return charmco, player, dissassociate
+
+def playerregen(player):
+    for stat in player["stats"]:
+        player["stats"][stat] = player["statmax"][stat]
 
 def cont():
     print("You unfortunately failed...")
@@ -330,14 +432,17 @@ def cont():
         else:
             print("Sorry, is that an option I gave you?")
 
-def RW_route_parents():
-    pass
-
-def DW_route_parents():
-    pass
-
 def completion():
-    pass
+    # Make COOLER please :)
+    print("WOW! You made it all the way to the end and got your car!")
+    while True:
+        restart = input("Would you like to play from the beginning all over again?(Y/N)")
+        if restart == "Y":
+            intro()
+        elif restart == "N":
+            print("Insert REALLY cool credits here:")
+        else:
+            print("What? Can you say that again? I don't think that was the letter Y OR N...")
 
 def intro():
     print("Hello, this is a TBAG--Text Based Adventure Game. (insert better intro text here)")

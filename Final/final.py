@@ -194,15 +194,83 @@ def combat(enemy, player):
             if player["miscish stats"]["imagination"]//3 == 1:
                 playerupdate = levelup(player)
                 player = playerupdate
+                player["miscish stats"]["imagination"] = player["miscish stats"]["imagination"] - 3
             playerupdate = playerregen(player)
             player = playerupdate
-            return
+
+        if disassociate <= 0:
+            print("Would you like to:\n1) Charm\n2) Use Skills\n3) Use Items")
+            turnch = inputchecker(3)
+            if turnch == 1:
+                print("You used your Charm on the enemy!")
+                charmcount += player["miscish stats"]["charm"]
+            elif turnch == 2:
+                skilly = DW_skills(charmcount, player)
+                charmcount = skilly[0]
+                player = skilly[1]
+                disassociate = skilly[2]
+            elif turnch == 3:
+                itemmy = DW_items(player)
+                player = itemmy
+        else:
+            print("You're still disassociating!")
+        
+        direction = random.randint(1, 2)
+        change = random.randint(0, 3)
+
+        if direction == 1:
+            damage = enemy[0] + change
+        elif direction == 2:
+            damage = enemy[0] - change
+
+        print(random.choice(enemy[2]))
+
+        print(f"Your lucidity increased by {damage}!!")
 
 def RW_route_parents():
-    pass
+    parent = [10, ["flavor text list"]]
 
-def DW_route_parents():
-    pass
+def DW_route_parents(player):
+    # WAITERRRR, flavor text please :)
+    charmcounter = 0
+    losscounter = 0
+    disassociate = 0
+    parents = [10, ["flavor text list"]]
+    player = playerregen(player)
+
+    while True:
+        if losscounter >= 100:
+            contq = cont()
+            DW_route_parents(player)
+        elif charmcounter >= 100:
+            completion()
+        
+        if disassociate == 0:
+            print("Would you like to:\n1) Charm\n2) Use Skills")
+            turnch = inputchecker(2)
+
+            if turnch == 1:
+                print("You used your Charm on your parents!")
+                charmcount += player["miscish stats"]["charm"]
+            elif turnch == 2:
+                skilly = DW_skills(charmcount, player)
+                charmcount = skilly[0]
+                player = skilly[1]
+                disassociate = skilly[2]
+        else:
+            print("You are still disassociating!")
+        
+        direction = random.randint(1, 2)
+        change = random.randint(0, 3)
+
+        if direction == 1:
+            damage = parents[0] + change
+        elif direction == 2:
+            damage = parents[0] - change
+
+        print(random.choice(parents[1]))
+
+        print(f"The loss counter increased by {damage}!!")
 
 def levelup(player):
     print("You gained enough imagination to level up!")
@@ -455,5 +523,20 @@ def intro():
             sys.exit()
         else:
             continue
+
+def inputchecker(rangeofchoices):
+    while True:
+            choicevar = input(f"Which one would you like to choose?(1~{rangeofchoices})")
+            try:
+                choicevar = int(choicevar)
+                if choicevar in range(1, rangeofchoices+1):
+                    break
+                else:
+                    print("That's not an option :(")
+                    continue
+            except ValueError:
+                    continue
+            
+    return choicevar
 
 intro()

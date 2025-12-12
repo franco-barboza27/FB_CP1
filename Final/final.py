@@ -253,14 +253,91 @@ def food_court(player):
                     print("Stop being so indecisive!")
 
 def nice_forest(player):
-    print("Sorry! This is a work in progress, in the meantime, YOU BEAT THE GAME!!!")
-    completion()
+    print("This route is WIP")
+
+    print("You find yourself in the nicer part of the forest.")
+    boar = ["boar", 6, ["Wow! so flavor", "text two", "even more flavor"]]
+    while True:
+        print("1) Look in the bush nearby\n2) Go deeper inside\n3) Go into the deep dark cave nearby\n4) Have a picnic\n")
+        choice = inputchecker(4)
+
+        if choice == 1:
+            if "boar" not in player["battles"]:
+                print("You ruffle the bush VERY rudely.")
+                print("A gigantic boar--as in three times the size of the bush--somehow jumps out of the bush and attacks you!!.")
+                fight = combat(boar, player)
+                player = fight[1]
+                if fight[0] == "WIN":
+                    print("You charmed the wild boar! It gave you a Portable SoundProof Chamber... don't ask how.")
+                    player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+            else:
+                print("You already charmed the boar there so it would be rude to disturb it again.")
+        elif choice == 2:
+            print("You go deeper into the forest.")
+            evil_forest(player)
+        elif choice == 3:
+            print("For SOME reason you decided to go into the deep DARK CAVE")
+            cave(player)
+        elif choice == 4:
+            print("You decided to just relax in a open part of the forest for a while...")
+            time.sleep(2)
+            print("It did absolutely nothing")
 
 def evil_forest():
-    pass
+    print("You go into the obviously closer to progressing the game area.")
+    tree = ["tree", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    while True:
+        print("1) Assault a tree\n2) Go EVEN deeper\n3) Go BACK to the NICE and GOOD part of the forest\n4) Go for a stroll... In the forest with horrors within your comprehension...\n")
+        choice = inputchecker(4)
+        if choice == 1:
+            if "boar" not in player["battles"]:
+                print("You kick some random tree, probably because you thought the option would be funny.")
+                print("The tree REALLY didn't think it was funny.")
+                fight = combat(tree, player)
+                player = fight[1]
+                if fight[0] == "WIN":
+                    print("You charmed the angry tree! It gave you a wooden ring..... You'd rather not think about the implications")
+                    player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+            else:
+                print("You already hit the tree why would you want to hit it again??")
+        elif choice == 2:
+            print("You find a HUT. \nSince theres definitely never been stories about why you shouldn't go into houses in creepy haunted forests, you head inside.")
+            hut(player)
+        elif choice == 3:
+            print("Because you know what's good for you, you go back to the lighter part of the forest.")
+            cave(player)
+        elif choice == 4:
+            print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
+            time.sleep(2)
+            print("They're still scary though...")
 
 def hut():
-    pass
+    print("You go into the hut... It has an old lady in it, she wont eat you maybe...")
+    tree = ["tree", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    while True:
+        print("1) Assault a tree\n2) Go EVEN deeper\n3) Go BACK to the NICE and GOOD part of the forest\n4) Go for a stroll... In the forest with horrors within your comprehension...\n")
+        choice = inputchecker(4)
+        if choice == 1:
+            if "boar" not in player["battles"]:
+                print("You kick some random tree, probably because you thought the option would be funny.")
+                print("The tree REALLY didn't think it was funny.")
+                fight = combat(tree, player)
+                player = fight[1]
+                if fight[0] == "WIN":
+                    print("You charmed the angry tree! It gave you a wooden ring..... You'd rather not think about the implications")
+                    player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+            else:
+                print("You already hit the tree why would you want to hit it again??")
+        elif choice == 2:
+            print("You find a HUT. \nSince theres definitely never been stories about why you shouldn't go into houses in creepy haunted forests, you head inside.")
+            hut(player)
+        elif choice == 3:
+            print("Because you know what's good for you, you go back to the lighter part of the forest.")
+            cave(player)
+        elif choice == 4:
+            print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
+            time.sleep(2)
+            print("They're still scary though...")
 
 def cellar():
     pass
@@ -504,7 +581,9 @@ def combat(enemy, player):
         if player["stats"]["lucidity"] <= player["statmax"]["lucidity"]:
             contq = cont()
             if contq == True:
-                return "LOSS"
+                playerupdate = playerregen(player)
+                player = playerupdate
+                return "LOSS", player
         elif enemy[1] <= charmcount:
             player["battle"] = player["battles"].append(enemy[0])
             player["miscish stats"]["imagination"] = player["miscish stats"]["imagination"] + 1
@@ -512,9 +591,8 @@ def combat(enemy, player):
                 playerupdate = levelup(player)
                 player = playerupdate
                 player["miscish stats"]["imagination"] = player["miscish stats"]["imagination"] - 3
-            playerupdate = playerregen(player)
-            player = playerupdate
-
+            return "WIN", player
+            
         if disassociate <= 0:
             print("Would you like to:\n1) Charm\n2) Use Skills\n3) Use Items")
             turnch = inputchecker(3)
@@ -536,9 +614,9 @@ def combat(enemy, player):
         change = random.randint(0, 3)
 
         if direction == 1:
-            damage = enemy[0] + change
+            damage = enemy[1] + change
         elif direction == 2:
-            damage = enemy[0] - change
+            damage = enemy[1] - change
 
         print(random.choice(enemy[2]))
 
@@ -771,10 +849,10 @@ def RW_skills(queleft, player):
         count += 1
 
     while True:
-        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
+        sklcho = input(f"What skill would you like to choose? 1~{count-1}:\n")
         try:
             sklcho = int(sklcho)
-            if sklcho in range(1, count+1):
+            if sklcho in range(1, count):
                 break
             else:
                 print("That's not an option :(")

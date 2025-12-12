@@ -875,7 +875,6 @@ def intro():
     print("Hello, this is a TBAG--Text Based Adventure Game. (insert better intro text here)")
     while True:
         start = input("Would you like to play?(Y/N):\n")
-        
         if start == "Y":
             startup_room()
         elif start == "N":

@@ -313,9 +313,9 @@ def evil_forest():
 
 def hut():
     print("You go into the hut... It has an old lady in it, she wont eat you maybe...")
-    tree = ["tree", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    tree = ["old lady", 10, ["Wow! so flavor", "text two", "even more flavor"]]
     while True:
-        print("1) Assault a tree\n2) Go EVEN deeper\n3) Go BACK to the NICE and GOOD part of the forest\n4) Go for a stroll... In the forest with horrors within your comprehension...\n")
+        print("1) Insult the lady\n2) Go into the creepydiki cellar\n3) Go BACK to the EVIL and BAD part of the forest\n4) Talk to the lady without insulting her\n")
         choice = inputchecker(4)
         if choice == 1:
             if "boar" not in player["battles"]:

@@ -23,8 +23,9 @@ def startup_room():
                   "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 15 questions", "save the hardest for last":"costs 2 adrenaline, you do 5 questions", "guess":"costs 2 adrenaline, answer 3 questions, gain reduced sleep."},
                   }
 
-        winlossrw = tun_fight(player, tun)
-        winlossdr = False
+        winlossrealworld= tun_fight(player, tun)
+        winlossrealworld = winlossrealworld[1]
+        winlossdreamworld = False
     elif wrldr == "2":
         player = {"state":{"alive":True},
                   "stats":{"lucidity":0, "social battery":10},
@@ -38,12 +39,13 @@ def startup_room():
                   "unacquired skills":{"dramatic lie":"costs 10 social battery and does 30 charm", "puppy dog eyes":"Costs 2 social batter, does 7 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
                   "battles":[]
                   }
-        winlossdr = nan_fight(player, nan)
-        winlossrw = False
+        winlossdreamworld = nan_fight(player, nan)
+        winlossdreamworld = winlossdreamworld[1]
+        winlossrealworld = False
     
-    if winlossdr == "WIN":
+    if winlossdreamworld == True:
         nice_forest(player)
-    elif winlossrw == "WIN":
+    elif winlossrealworld == True:
         bedroom(player)
 
 def bedroom(player):
@@ -161,7 +163,7 @@ def bleachers(player):
                     print("Stop being so indecisive!")
 
 def library(player):
-    print("As you get there, you see a couple distinct groups of people littered around the field and bleachers.")
+    print("It's mostly quiet with the occasional 'NO WAY!' sprinkled here and there.\n It's either a really good book or crazy gossip.")
     while True:
         print("1) Study your classes\n2) Study how to take tests\n3) Look around\n4) Go to the bleachers\n5) Go to the food court\n6) Go to class")
         choice = inputchecker(6)
@@ -277,16 +279,21 @@ def tun_fight(playerchar, tunlytun):
         if playerchar["stats"]["sleepiness"] >= playerchar["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
-                return "LOSS"
+                update = playerregen(playerchar)
+                playerchar = update
+                return playerchar, False
             else: 
                 sys.exit()
         if turn >= tunlytun[1]:
-            return 
+            print("You won!")
+            update = playerregen(playerchar)
+            playerchar = update
+            return playerchar, True
 
         print("This is your chance to show what you can do!") # lowkey make a flavor text randomizer here pls
         print("You will be able to use your Memory to 'recall'-- your skills and items do a variety of things!")
         print(f"You currently have:")
-        print(f"Sleepiness:{playerchar["stats"]["sleepiness"]}/{playerchar["statmax"]["sleepiness"]}\nAdrenaline:{playerchar["stats"]["adrenaline"]}/{playerchar["statmax"]["adrenaline"]}\n{playerchar["stats"]["memory"]}/{playerchar["statmax"]["memory"]}")
+        print(f"Sleepiness:{playerchar["stats"]["sleepiness"]}/{playerchar["statmax"]["sleepiness"]}\nAdrenaline:{playerchar["stats"]["adrenaline"]}/{playerchar["statmax"]["adrenaline"]}\nMemory:{playerchar["stats"]["memory"]}/{playerchar["statmax"]["memory"]}")
         while True:
             turnchoice = input("Would you like to\n1) Recall\n2) Skills\n3) Items:\n")
             if turnchoice == "1":
@@ -314,14 +321,15 @@ def tun_fight(playerchar, tunlytun):
 
         print(f"Your sleepiness increased by {damage}")
 
+        playerchar["stats"]["sleepiness"] = playerchar["stats"]["sleepiness"] + damage
+
         turn += 1
         
 def math_t(player):
     questions = 50
     panic = 0
     panicchance = [1 , 0 , 0 , 0 , 0]
-    playerupdate = playerregen(player)
-    player = playerupdate()
+    player = playerregen(player)
     print("Alright, I'll hand out your tests now!")
     while True:
         
@@ -449,10 +457,15 @@ def nan_fight(playerchar, nanlynan):
         if playerchar["stats"]["lucidity"] > playerchar["statmax"]["lucidity"]:
             contq = cont()
             if contq == True:
-                return "LOSS"
+                update = playerregen(playerchar)
+                playerchar = update
+                return playerchar, False
     
         if charmcount >= nanlynan[1]:
-            return "WIN"
+            print("You won!")
+            update = playerregen(playerchar)
+            playerchar = update
+            return playerchar, True
 
         print("You still need to convince Nan to let you sleep!") # lowkey make a flavor text randomizer here pls
         print("Use your CHARM to CHARM the enemy into letting you do what you want!")
@@ -463,8 +476,8 @@ def nan_fight(playerchar, nanlynan):
         turnchoice = input("Do you want to:\n1) Charm\n2) Use a Social Skill\n3) Use an item:\n")
 
         if turnchoice == "1":
-            charmcount += playerchar["stats"]["charm"]
-            print(f"You did {playerchar["stats"]["charm"]} charm!")
+            charmcount += playerchar["miscish stats"]["charm"]
+            print(f"You did {playerchar["miscish stats"]["charm"]} charm!")
         elif turnchoice == "2":
             print("You don't have ANY social skills yet, you better train them soon!")
         elif turnchoice == "3":
@@ -631,7 +644,7 @@ def levelup(player):
             continue
         
     if statinc == 1:
-        player["miscstats"]["charm"] = player["miscstats"]["charm"] + 5
+        player["miscish stats"]["charm"] = player["miscish stats"]["charm"] + 5
         print(f"Your Charm increased by 5!")
     elif  statinc == 2:
         player["statmax"]["social battery"] = player["statmax"]["social battery"] + 5
@@ -829,6 +842,9 @@ def DW_skills(charmco, player):
 def playerregen(player):
     for stat in player["stats"]:
         player["stats"][stat] = player["statmax"][stat]
+    if "sleepiness" in player["stats"]:
+        player["stats"]["sleepiness"] = 0
+    return player
 
 def cont():
     print("You unfortunately failed...")

@@ -318,7 +318,7 @@ def hut():
         print("1) Insult the lady\n2) Go into the creepydiki cellar\n3) Go BACK to the EVIL and BAD part of the forest\n4) Talk to the lady without insulting her\n")
         choice = inputchecker(4)
         if choice == 1:
-            if "boar" not in player["battles"]:
+            if "old lady" not in player["battles"]:
                 print("You kick some random tree, probably because you thought the option would be funny.")
                 print("The tree REALLY didn't think it was funny.")
                 fight = combat(tree, player)

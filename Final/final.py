@@ -16,11 +16,11 @@ def startup_room():
                   "stats":{"sleepiness":0, "adrenaline":10, "memory":10},
                   "statmax":{"sleepiness":50, "adrenaline":10, "memory":10},
                   "inventory":{},
-                  "Collected items":{},
+                  "collected items":{},
                   "usable items":{"coffee":"decreases sleepiness by 10", "cheat sheet":"when you use the cheat sheet you answer a random amount of questions with a random chance of getting caught-losing the battle",
                                   "energy drink":"gives you 2 adrenaline and -15 sleepiness", "candy bag":"gives you 3 memory", "burrito":"decreases sleep by 10 and increases adrenaline by 3"},
                   "skills":{},
-                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 10 questions", "save the hardest for last":"costs 2 adrenaline, you do 3 questions", "guess":"costs 2 adrenaline, answer 2 questions, gain reduced sleep."},
+                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 15 questions", "save the hardest for last":"costs 2 adrenaline, you do 5 questions", "guess":"costs 2 adrenaline, answer 3 questions, gain reduced sleep."},
                   }
 
         winlossrw = tun_fight(player, tun)
@@ -46,26 +46,213 @@ def startup_room():
     elif winlossrw == "WIN":
         bedroom(player)
 
-def bedroom():
-    pass
+def bedroom(player):
+    print("You woke up, your alarm blared on your table")
+    print("After getting up, you look around")
+    while True:
+        print("1) Check desk\n2) Find glasses\n3) Go to the kitchen")
+        choice = inputchecker(3)
 
-def kitchen():
-    pass
+        if choice == 1:
+            if "phone" not in player["collected items"]:
+                print("You found your phone")
+                player["collected items"]["phone"] = "It has precious memories on it"
+            else: 
+                print("You aready have your phone")
+        elif choice == 2:
+            if "glasses" not in player["collected items"]:
+                print("You found your glasses")
+                print("Your maximum memory increased by 5!")
+                player["statmax"]["memory"] = player["statmax"]["memory"] + 5
+                player["collected items"]["glasses"] = "It helps you see better, and makes you look smarter"
+            else:
+                print("You already have your glasses.")
+        elif choice == 3:
+            print("You went to the kitchen.")
+            kitchen(player)
 
-def campus():
-    pass
+def kitchen(player):
+    print("Your kitchen, as always is somewhat messy, especially with finals coming up.")
+    print("Oh, right... FINALS! Hurriedly, you look around and check what you need to do.")
+    while True:
+        print("1) Make Coffee\n2) Look outside\n3) Go to college")
+        choice = inputchecker(3)
 
-def bleachers():
-    pass
+        if choice == 1:
+            if "coffee" not in player["collected items"]:
+                print("You made yourself coffee")
+                player["collected items"]["coffee"] = player["usable items"]["coffee"]
+                player["inventory"]["coffee"] = player["usable items"]["coffee"]
+            else: 
+                print("You've already made your morning coffee")
+        elif choice == 2:
+            print("You look outside your window... there is stuff.")
+        elif choice == 3:
+            print("You went out the door and walked to school")
+            campus(player)
 
-def library():
-    pass
+def campus(player):
+    print("You have a few moments before you have to go to class and start your remaining finals")
+    while True:
+        print("1) Go to the bleachers\n2) Go to the library\n3) Go to the food court")
+        choice = inputchecker(3)
 
-def food_court():
-    pass
+        if choice == 1:
+            print("You go to the bleachers")
+            bleachers(player)
+        elif choice == 2:
+            print("You go to the library")
+            library(player)
+        elif choice == 3:
+            print("You got to the food court")
+            food_court(player)
 
-def nice_forest():
-    pass
+def bleachers(player):
+    print("As you get there, you see a couple distinct groups of people littered around the field and bleachers.")
+    while True:
+        print("1) Talk to the sketchy kids behind the bleachers\n2) Look around the seats\n3) Talk to the popular kids\n4) Go to the library\n5) Go to the food court\n6) Go to class")
+        choice = inputchecker(6)
+
+        if choice == 1:
+            if "energy drink" not in player["collected items"]:
+                print("You go and talk to the sketchy kids.")
+                print("They gave you an energy drink, they've been banned for years now.")
+                player["inventory"]["energy drink"] = player["usable items"]["energy drink"]
+                player["collected items"]["energy drink"] = player["usable items"]["energy drink"]
+            else:
+                print("You've already talked to them.")
+        elif choice == 2:
+            if "candy bag" not in player["collected items"]:
+                print("You look around the seats and find a bag full of smarties")
+                print("You got the candy bag!")
+                player["inventory"]["candy bag"] = player["usable items"]["candy bag"]
+                player["collected items"]["candy bag"] = player["usable items"]["candy bag"]
+            else:
+                print("Unfortunately there wasn't anything else...")
+        elif choice == 3:
+            if "phone" in player["collected items"]:
+                if "cheat sheet" not in player["collected items"]:
+                    print("You talk to one of the cheerleaders and she adds you to a group chat with other well know schoolers.")
+                    print("You look at it and see that theres a cheat sheet on it.")
+                    print("You got the cheat sheet! Don't get caught!")
+                    player["inventory"]["cheat sheet"] = player["usable items"]["cheat sheet"]
+                    player["collected items"]["cheat sheet"] = player["usable items"]["cheat sheet"]
+                else:
+                    print("You talk to the cheerleader, but since you've already been added to the group chat, she just thinks you're hitting on her.")
+            else:
+                print("You talk to the cheerleader, although, you don't have your phone so you can't give her your number. ")
+        elif choice == 4:
+            print("You went to the library next, you had enough of trying to be popular")
+            library(player)
+        elif choice == 5:
+            print("You went to the food court, after all that 'excercising' you felt famished")
+            food_court(player)
+        elif choice == 6:
+            while True:
+                starttestsq = input("Are you sure you want to start your finals now?(Y/N):")
+
+                if starttestsq == "Y":
+                    print("You go into your classroom")
+                    math_t(player)
+                elif starttestsq == "N":
+                    print("You change your mind")
+                    break
+                else:
+                    print("Stop being so indecisive!")
+
+def library(player):
+    print("As you get there, you see a couple distinct groups of people littered around the field and bleachers.")
+    while True:
+        print("1) Study your classes\n2) Study how to take tests\n3) Look around\n4) Go to the bleachers\n5) Go to the food court\n6) Go to class")
+        choice = inputchecker(6)
+
+        if choice == 1:
+            if player["statmax"]["memory"] < 20:
+                print("You spend a while reading through your notes and practicing active recall.")
+                print("You hate it.")
+                time.sleep(3)
+                print("You got 1 whole maximum memory")
+                player["statmax"]["memory"] = player["statmax"]["memory"] + 1
+            else:
+                print("NO! Enough studying this STUPID chem and STUPID math and STUPID history.")
+        elif choice == 2:
+            if player["unacquired skills"]:
+                print("You find a book about test taking skills")
+                print("It's much more manageable than studying the actual material")
+                skill = str(random.choice(list(player["unacquired skills"].keys())))
+                player["skills"][skill] = player["unacquired skills"][skill]
+                del player["unacquired skills"][skill]
+                print(f"You got:\n{skill}")
+            else:
+                print("There's not really anything else to learn")
+        elif choice == 3:
+            print("Super duper awesome and cool flavor text")
+        elif choice == 4:
+            print("You went to the bleachers next, because studying is for nerds")
+            bleachers(player)
+        elif choice == 5:
+            print("You went to the food court, using your brain spends a lot of energy.")
+            food_court(player)
+        elif choice == 6:
+            while True:
+                starttestsq = input("Are you sure you want to start your finals now?(Y/N):")
+
+                if starttestsq == "Y":
+                    print("You go into your classroom")
+                    math_t(player)
+                elif starttestsq == "N":
+                    print("You change your mind")
+                    break
+                else:
+                    print("Stop being so indecisive!")
+
+def food_court(player):
+    print("Chatter fills the air as people understandably big back on delicious... fast food... actually maybe not too understandable.")
+    while True:
+        print("1) Go to the Chipotle\n2) Relax\n3) Spontaneosly break out into dance and song\n4) Go to the bleachers\n5) Go to the library\n6) Go to class")
+        choice = inputchecker(6)
+
+        if choice == 1:
+            if "burrito" not in player["collected items"]:
+                print("You enter the chipotle line.")
+                print("The cute cashier asks for your order, so while you would normally order a taco, you accidentally just said burrito instead becaus you were nervous.")
+                player["inventory"]["burrito"] = player["usable items"]["burrito"]
+                player["collected items"]["burrito"] = player["usable items"]["burrito"]
+            else:
+                print("You don; have the guts to try asking for a refund and ordering a taco instead.")
+        elif choice == 2:
+            print("Since for some reason the food court has some massage chairs, you sit in one.")
+            if player["statmax"]["sleepiness"] >= 80:
+                print("You try to take a nap but you feel rested enough")
+            else:
+                print("You take a nap in a massage bed.")
+                time.sleep(3)
+                print("Your maximum lucidity increased by 15!")
+                player["statmax"]["sleepiness"] = player["statmax"]["sleepiness"] + 15
+        elif choice == 3:
+            print("It's as embarrassing as it sounds")
+        elif choice == 4:
+            print("You went to the bleachers, excercise is probably good on a full stomache...")
+            bleachers(player)
+        elif choice == 5:
+            print("You went to the library, studying is very important")
+            library(player)
+        elif choice == 6:
+            while True:
+                starttestsq = input("Are you sure you want to start your finals now?(Y/N):")
+
+                if starttestsq == "Y":
+                    print("You go into your classroom")
+                    math_t(player)
+                elif starttestsq == "N":
+                    print("You change your mind")
+                    break
+                else:
+                    print("Stop being so indecisive!")
+
+def nice_forest(player):
+    print("Sorry! This is a work in progress, in the meantime, YOU BEAT THE GAME!!!")
+    completion()
 
 def evil_forest():
     pass
@@ -129,14 +316,131 @@ def tun_fight(playerchar, tunlytun):
 
         turn += 1
         
-def math_t():
-    pass
+def math_t(player):
+    questions = 50
+    panic = 0
+    panicchance = [1 , 0 , 0 , 0 , 0]
+    playerupdate = playerregen(player)
+    player = playerupdate()
+    print("Alright, I'll hand out your tests now!")
+    while True:
+        
+        if panic == 0:
+            print(f"You have:\n{questions} questions left\n{player["stats"]["memory"]}/{player["statmax"]["memory"]} memory\n{player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness\n{player["stats"]["adrenaline"]}/{player["statmax"]["adrenaline"]} adrenaline")
 
-def chem_t():
-    pass
+            print("what will you do?\n1) answer questions\n2)use a skill\n3) use an item?:\n")
+            turnch = inputchecker(3)
+
+            if turnch == 1:
+                if player["stats"]["memory"] > 0:
+                    questions = questions - 3
+                    player["stats"]["memory"] = player["stats"]["memory"] - 1
+                else:
+                    print("You can't remember it right now!")
+            elif turnch == 2:
+                update = RW_skills(questions, player)
+                questions = update[0]
+                player = update[1]
+            elif turnch == 3:
+                item = RW_skills(questions, player)
+                questions = update[0]
+                player = update[1]
+            
+            panicquestion = random.choice(panicchance)
+            
+            if panicquestion == 1:
+                panic = random.randint(1, 3)
+        else:
+            panic = panic - 1
+            print(f"You have {player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness")
+
+        print("You gained 5 sleepiness!")
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 5
+
+        if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
+            contq = cont()
+            if contq == True:
+                math_t(player)
+            if questions <= 0:
+                print("you survived!")
+                chem_t(player)
+
+def chem_t(player):
+    questions = 35
+    playerupdate = playerregen(player)
+    player = playerupdate
+    print("Alright class! Backpacks to the front!\n Time for the chem test I guess...")
+    while True:
+        
+        print(f"You have:\n{questions} questions left\n{player["stats"]["memory"]}/{player["statmax"]["memory"]} memory\n{player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness\n{player["stats"]["adrenaline"]}/{player["statmax"]["adrenaline"]} adrenaline")
+
+        print("what will you do?\n1) answer questions\n2)use a skill")
+        turnch = inputchecker(2)
+
+        if turnch == 1:
+            if player["stats"]["memory"] > 0:
+                questions = questions - 3
+                player["stats"]["memory"] = player["stats"]["memory"] - 1
+            else:
+                print("You can't remember it right now!")
+        elif turnch == 2:
+            update = RW_skills(questions, player)
+            questions = update[0]
+            player = update[1]
+
+        print("You gained 10 sleepiness!")
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+
+        if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
+            contq = cont()
+            if contq == True:
+                chem_t(player)
+        if questions <= 0:
+            print("you survived!")
+            history_t(player)
 
 def history_t():
-    pass
+    questions = 75
+    playerupdate = playerregen(player)
+    player = playerupdate()
+    print("Open up your laptops gang!\n The code is kjrepsdjfgvvcLFJA")
+    while True:
+
+        if panic == 0:
+            print(f"You have:\n{questions} questions left\n{player["stats"]["memory"]}/{player["statmax"]["memory"]} memory\n{player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness\n{player["stats"]["adrenaline"]}/{player["statmax"]["adrenaline"]} adrenaline")
+
+            print("what will you do?\n1) answer questions\n2)use a skill\n3) use an item?:\n")
+            turnch = inputchecker(3)
+
+            if turnch == 1:
+                if player["stats"]["memory"] > 0:
+                    questions = questions - 3
+                    player["stats"]["memory"] = player["stats"]["memory"] - 1
+                else:
+                    print("You can't remember it right now!")
+            elif turnch == 2:
+                update = RW_skills(questions, player)
+                questions = update[0]
+                player = update[1]
+            elif turnch == 3:
+                item = RW_skills(questions, player)
+                questions = update[0]
+                player = update[1]
+
+        else:
+            panic = panic - 1
+            print(f"You have {player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness")
+
+        print("You gained 15 sleepiness!")
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
+
+        if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
+            contq = cont()
+            if contq == True:
+                math_t(player)
+            if questions <= 0:
+                print("you survived!")
+                RW_route_parents(player)
 
 def nan_fight(playerchar, nanlynan):
     charmcount = 0
@@ -228,7 +532,37 @@ def combat(enemy, player):
         print(f"Your lucidity increased by {damage}!!")
 
 def RW_route_parents():
-    parent = [10, ["flavor text list"]]
+    parents = [10, ["flavor text list"]]
+    evidencegauge = 0
+    arguloss = 0
+
+    while True:
+        player = playerregen(player)
+
+        if arguloss >= 100:
+            contq = cont()
+            DW_route_parents(player)
+        elif evidencegauge >= 100:
+            completion()
+
+        print("Would you like to:\n1) Use Memory")
+        turnch = inputchecker(1)
+
+        if turnch == 1 and player["stats"]["memory"] > 0:
+            print("You tried to remember a good reason why they should buy you a car!")
+            evidencegauge += player["stats"]["memory"]
+        
+        direction = random.randint(1, 2)
+        change = random.randint(0, 3)
+
+        if direction == 1:
+            damage = parents[0] + change
+        elif direction == 2:
+            damage = parents[0] - change
+
+        print(random.choice(parents[1]))
+
+        print(f"The loss counter increased by {damage}!!")
 
 def DW_route_parents(player):
     # WAITERRRR, flavor text please :)
@@ -332,6 +666,7 @@ def RW_items(queleft, player):
         player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
+        del player["inventory"][item]
             
     elif item == "energy drink":
         player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 2
@@ -340,12 +675,14 @@ def RW_items(queleft, player):
         player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
+        del player["inventory"][item]
 
     elif item == "candy bag":
         player["stats"]["memory"] = player["stats"]["memory"] + 3
         if player["stats"]["memory"] > player["statmax"]["memory"]:
             player["stats"]["memory"] = player["statmax"]["memory"]
-    
+        del player["inventory"][item]
+
     elif item == "burrito":
         player["stats"]["adrenaline"] = player["stats"]["adrenaline"] + 4
         if player["stats"]["adrenaline"] > player["statmax"]["adrenaline"]:
@@ -353,6 +690,7 @@ def RW_items(queleft, player):
         player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 7
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
+        del player["inventory"][item]
 
     elif item == "cheat sheet":
         caughtq = random.randint(1, 10)
@@ -391,20 +729,24 @@ def DW_items(player):
         player["stats"]["lucidity"] = player["stats"]["lucidity"] - 10
         if player["stats"]["lucidity"] < 0:
             player["stats"]["lucidity"] = 0
+        del player["inventory"][item]
             
     elif item == "big rock":
         player["stats"]["lucidity"] = player["stats"]["lucidity"] - 20
         if player["stats"]["lucidity"] < 0:
             player["stats"]["lucidity"] = 0
+        del player["inventory"][item]
 
     elif item == "frying pan":
         player["stats"]["social battery"] = player["stats"]["social battery"] + 5
         if player["stats"]["social battery"] < player["statmax"]["social battery"]:
             player["stats"]["social battery"] = player["statmax"]["social battery"]
+        del player["inventory"][item]
     elif item == "PSPC":
         player["stats"]["social battery"] = player["stats"]["social battery"] + 5
         if player["stats"]["social battery"] < player["statmax"]["social battery"]:
             player["stats"]["social battery"] = player["statmax"]["social battery"]
+        del player["inventory"][item]
     
     return player
 
@@ -442,6 +784,7 @@ def RW_skills(queleft, player):
         player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
+        
     
     return queleft, player
 

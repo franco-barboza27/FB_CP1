@@ -1,6 +1,9 @@
 # FB 1st codespace stuff
 import time as t, random as r
 
+h = "string"
+print(str(h))
+
 listname = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 dictname = {"imbeded dictionary":{}, "otherimbededdict":{"key":"SUPER cool value", "otherkey":"super UNCOOL value", 10:"nine-hundred fifty-three"}}
 

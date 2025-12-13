@@ -283,21 +283,21 @@ def nice_forest(player):
             time.sleep(2)
             print("It did absolutely nothing")
 
-def evil_forest():
+def evil_forest(player):
     print("You go into the obviously closer to progressing the game area.")
     tree = ["tree", 10, ["Wow! so flavor", "text two", "even more flavor"]]
     while True:
         print("1) Assault a tree\n2) Go EVEN deeper\n3) Go BACK to the NICE and GOOD part of the forest\n4) Go for a stroll... In the forest with horrors within your comprehension...\n")
         choice = inputchecker(4)
         if choice == 1:
-            if "boar" not in player["battles"]:
+            if "tree" not in player["battles"]:
                 print("You kick some random tree, probably because you thought the option would be funny.")
                 print("The tree REALLY didn't think it was funny.")
                 fight = combat(tree, player)
                 player = fight[1]
                 if fight[0] == "WIN":
                     print("You charmed the angry tree! It gave you a wooden ring..... You'd rather not think about the implications")
-                    player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+                    player["inventory"]["wooden ring"] = player["usable items"]["wooden ring"]
             else:
                 print("You already hit the tree why would you want to hit it again??")
         elif choice == 2:
@@ -305,42 +305,68 @@ def evil_forest():
             hut(player)
         elif choice == 3:
             print("Because you know what's good for you, you go back to the lighter part of the forest.")
-            cave(player)
+            nice_forest(player)
         elif choice == 4:
             print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
             time.sleep(2)
             print("They're still scary though...")
 
-def hut():
+def hut(player):
     print("You go into the hut... It has an old lady in it, she wont eat you maybe...")
-    tree = ["old lady", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    oldlady = ["old lady", 10, ["Wow! so flavor", "text two", "even more flavor"]]
     while True:
         print("1) Insult the lady\n2) Go into the creepydiki cellar\n3) Go BACK to the EVIL and BAD part of the forest\n4) Talk to the lady without insulting her\n")
         choice = inputchecker(4)
         if choice == 1:
             if "old lady" not in player["battles"]:
-                print("You kick some random tree, probably because you thought the option would be funny.")
-                print("The tree REALLY didn't think it was funny.")
-                fight = combat(tree, player)
+                print("You tell the old lady that she looks like a wrinkly sack of eggs.")
+                print("She gets out her cane and starts trying to smack you with it!")
+                fight = combat(oldlady, player)
                 player = fight[1]
                 if fight[0] == "WIN":
-                    print("You charmed the angry tree! It gave you a wooden ring..... You'd rather not think about the implications")
-                    player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+                    print("She ended up giving you some sleep tea...... You'd rather not think about the implications")
+                    player["inventory"]["sleep tea"] = player["usable items"]["sleep tea"]
             else:
-                print("You already hit the tree why would you want to hit it again??")
+                print("You already insulted her, you really shouldn't do it again.")
         elif choice == 2:
-            print("You find a HUT. \nSince theres definitely never been stories about why you shouldn't go into houses in creepy haunted forests, you head inside.")
-            hut(player)
+            print("You find a door that leads to some kind of dark and depressed cellar.")
+            cellar(player)
         elif choice == 3:
-            print("Because you know what's good for you, you go back to the lighter part of the forest.")
-            cave(player)
+            print("You head out of the surprisingly pleasant hut, uneaten.")
+            evil_forest(player)
         elif choice == 4:
             print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
             time.sleep(2)
             print("They're still scary though...")
 
-def cellar():
-    pass
+def cellar(player):
+    print("You see a lot of chains... and more chains... You wonder what they're for.")
+    ogre = ["Ogre", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    while True:
+        print("1) Look around a little bit  \n2) Free the weirdly complacent looking ogre \n3) Go back upstairs, where there isn't just piles on piles of chains.")
+        choice = inputchecker(3)
+        if choice == 1:
+            print("You look around the cellars, and notice that it's not just chains, it's cuffs as well.")
+            print("Like metal ones, not whatever you might've been thinking")
+        elif choice == 2:
+            if "old lady" not in player["battles"]:
+                print("You look around the cellars, and notice that it's not just chains, it's cuffs as well.")
+                print("Like metal ones, not whatever you might've been thinking")
+                fight = combat(ogre, player)
+                player = fight[1]
+                if fight[0] == "WIN":
+                    print("The ogre gives you a smooch on the top of your head. It's probably just some sort of Ogre custom")
+                    print("BEEP BEEP BEEP")
+                    print("You woke up and oh right... finals are today, then you check the time and see that they WERE today.")
+                    print("Oh well.. you'll figure out a way to get that car.")
+                    DW_route_parents(player)
+        elif choice == 3:
+            print("You go uptairs to the nicer part of the hut house")
+            hut(player)
+        elif choice == 4:
+            print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
+            time.sleep(2)
+            print("They're still scary though...")
 
 def cave():
     pass
@@ -921,6 +947,8 @@ def playerregen(player):
     for stat in player["stats"]:
         player["stats"][stat] = player["statmax"][stat]
     if "sleepiness" in player["stats"]:
+        player["stats"]["sleepiness"] = 0
+    if "lucidity" in player["stats"]:
         player["stats"]["sleepiness"] = 0
     return player
 

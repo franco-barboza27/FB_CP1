@@ -19,7 +19,7 @@ def startup_room():
                   "collected items":{},
                   "usable items":{"coffee":"decreases sleepiness by 10", "cheat sheet":"when you use the cheat sheet you answer a random amount of questions with a random chance of getting caught-losing the battle",
                                   "energy drink":"gives you 2 adrenaline and -15 sleepiness", "candy bag":"gives you 3 memory", "burrito":"decreases sleep by 10 and increases adrenaline by 3"},
-                  "skills":{},
+                  "skills":{"slap":"Costs 2 adrenaline, but heals 20 sleepiness."},
                   "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 15 questions", "save the hardest for last":"costs 2 adrenaline, you do 5 questions", "guess":"costs 2 adrenaline, answer 3 questions, gain reduced sleep."},
                   }
 
@@ -35,7 +35,7 @@ def startup_room():
                   "Collected items":{},
                   "usable items":{"sleep tea":"decreases lucidity by 10", "big rock":"-20 lucidity",
                                   "frying pan":"You make yourself eggs--you recharge 5 social batter", "PSPC":"recharge 10 social batter"},
-                  "skills":{},
+                  "skills":{"pretend nap":"You pretend to sleep! Keeping up the fascade costs 2 social battery but you lose 25 lucidity!"},
                   "unacquired skills":{"dramatic lie":"costs 10 social battery and does 30 charm", "puppy dog eyes":"Costs 2 social batter, does 7 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
                   "battles":[]
                   }
@@ -270,6 +270,7 @@ def nice_forest(player):
                 if fight[0] == "WIN":
                     print("You charmed the wild boar! It gave you a Portable SoundProof Chamber... don't ask how.")
                     player["inventory"]["PSPC"] = player["usable items"]["PSPC"]
+                    player["Collected items"]["PSPC"] = player["usable items"]["PSPC"]
             else:
                 print("You already charmed the boar there so it would be rude to disturb it again.")
         elif choice == 2:
@@ -297,7 +298,8 @@ def evil_forest(player):
                 player = fight[1]
                 if fight[0] == "WIN":
                     print("You charmed the angry tree! It gave you a wooden ring..... You'd rather not think about the implications")
-                    player["inventory"]["wooden ring"] = player["usable items"]["wooden ring"]
+                    print("You put the ring on, it increased your charm by 5!")
+                    player["miscish stats"]["charm"] = player["miscish stats"]["charm"] + 5
             else:
                 print("You already hit the tree why would you want to hit it again??")
         elif choice == 2:
@@ -326,6 +328,7 @@ def hut(player):
                 if fight[0] == "WIN":
                     print("She ended up giving you some sleep tea...... You'd rather not think about the implications")
                     player["inventory"]["sleep tea"] = player["usable items"]["sleep tea"]
+                    player["Collected items"]["sleep tea"] = player["usable items"]["sleep tea"]
             else:
                 print("You already insulted her, you really shouldn't do it again.")
         elif choice == 2:
@@ -335,9 +338,9 @@ def hut(player):
             print("You head out of the surprisingly pleasant hut, uneaten.")
             evil_forest(player)
         elif choice == 4:
-            print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
+            print("You talk to her and realize that the old lady isn't actually all that bad.")
             time.sleep(2)
-            print("They're still scary though...")
+            print("She does say some mildly concerning things though... \n'grumble grumble... new gens... grumble grumble...\nThe haters will hate you guess.")
 
 def cellar(player):
     print("You see a lot of chains... and more chains... You wonder what they're for.")
@@ -347,32 +350,106 @@ def cellar(player):
         choice = inputchecker(3)
         if choice == 1:
             print("You look around the cellars, and notice that it's not just chains, it's cuffs as well.")
-            print("Like metal ones, not whatever you might've been thinking")
+            print("It seems as though there used to be many confined here.")
         elif choice == 2:
-            if "old lady" not in player["battles"]:
-                print("You look around the cellars, and notice that it's not just chains, it's cuffs as well.")
-                print("Like metal ones, not whatever you might've been thinking")
-                fight = combat(ogre, player)
-                player = fight[1]
-                if fight[0] == "WIN":
-                    print("The ogre gives you a smooch on the top of your head. It's probably just some sort of Ogre custom")
-                    print("BEEP BEEP BEEP")
-                    print("You woke up and oh right... finals are today, then you check the time and see that they WERE today.")
-                    print("Oh well.. you'll figure out a way to get that car.")
-                    DW_route_parents(player)
+            print("You found a weird looking ogre and decide to free it from it's chains.\n As soon as you unlock the last cuff, it uppercuts your jaw!")
+            time.sleep(2)
+            print("Well that was rude.")
+            fight = combat(ogre, player)
+            player = fight[1]
+            if fight[0] == "WIN":
+                print("The ogre gives you a smooch on the top of your head. It's probably just some sort of Ogre custom")
+                print("BEEP BEEP BEEP")
+                print("You woke up and oh right... finals are today, then you check the time and see that they WERE today.")
+                print("Oh well.. you'll figure out a way to get that car.")
+                DW_route_parents(player)
         elif choice == 3:
             print("You go uptairs to the nicer part of the hut house")
             hut(player)
         elif choice == 4:
-            print("You walk around and to your surprise, all of the HWIYC are very kind and dont murder you.")
-            time.sleep(2)
-            print("They're still scary though...")
+            print("You look around the cellar, trying to ignore the ogre in the corner of your vision... surely it has nothing to do with you.")
 
-def cave():
-    pass
+def cave(player):
+    print("It's really really really dark... One might say you could describe it as 'dark, darker yet darker")
+    bat = ["bat", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    wisp = ["wisp", 10, ["Wow! so flavor", "text two", "even more flavor"]]
+    while True:
+        print("1) Try to stumble further into the cave  \n2) Go into the glowing chamber of light you see a ways away \n3) Go back into the light.\n4) let out an earpeircing scream")
+        choice = inputchecker(4)
+        if choice == 1:
+            print("You try to reach into the darkness and take a few steps...")
+            time.sleep(2.5)
+            print(f"Unfortunately, you walk straight first into a wall... That will leave a mark.")
+        elif choice == 2:
+            if "wisp" not in player["battles"]:
+                print("You decide that the slightly lit up path that leads to what seemed like a glowing room was the best option.")
+                print("In side was a glowing ball of fire that immediately started flaming around menacingly.")
+                time.sleep(1.5)
+                print("It doesn't seem to like you.")
+                fight = combat(wisp, player)
+                player = fight[1]
+            if fight[0] == "WIN":
+                print("After convincing the wisp it left you alone and opened the a hidden path to a deeper part of the cave.")
+                if "frying pan" not in player["Collected items"]:
+                    print("It also gave you a frying pan!")
+                    player["Collected items"]["frying pan"] = player["usable items"]["frying pan"]
+                    player["inventory"]["frying pan"] = player["usable items"]["frying pan"]
+                while True:
+                    deep = input("Would you like to go deeper?(Y/N):\n")
+                    if deep == "Y":
+                        print("You walk deeper into the cave.")
+                        deeper_cave(player)
+                    elif deep == "N":
+                        print("You decide to look around a little more before going deeper.")
+                        break
+                    else:
+                        continue
+        elif choice == 3:
+            if "sun glasses" not in player["Collected items"]:
+                print("You go back to the forest, the light blinds you for a few moments before you regain your senses.")
+                nice_forest(player)
+            else:
+                print("Your sun glasses shield your eyes from the sun, so you're eyes aren't blinded.")
+        elif choice == 4:
+            if "bat" not in player["battles"]:
+                print("For some reason, you decide that the current moment would be a great time to shriek at the top of your lungs.")
+                print("Your... lovely voice startles a flock of bats that were on the ceiling and the flock out.")
+                print("One of them knocks into you!")
+                fight = combat(bat, player)
+                if fight[0] == "WIN":
+                    print("You pacify the bat and it gives you a pair of sunglasses!")
+                    print("You put them on and gain 5 charm!")
+                    print("Although now you wonder how the bat will fair in the bright sun...")
+                    player["Collected items"]["sun glasses"] = "They do sun glass stuff... on that note, why are they called SUN-GLASSES, if they BLOCK the sun and glasses are supposed to help you see BETTER or MORE? Shouldn't they make the sun like ten times brighter instead or something?"
+            else:
+                print("You shriek again but theres no more bats in the cave")
 
-def deeper_cave():
-    pass
+def deeper_cave(player):
+    rockguy = ["Igneous Rock Spirit", 30, ["Wow! so flavor", "text two", "even more flavor"]]
+    print("It's surprisingly gotten REALLY hot in here... There's even streams of flowy lava here and there.")
+    while True:
+        print("Will you:\n1) lay down and take a toasty nap\n2) Kick the wierdly large looking rock\n3) Go back to the darker part of the cave.")
+        choice = inputchecker(3)
+        if choice == 2:
+            if "Igneous Rock Spirit" not in player["battles"]:
+                print("You kick some random rock.")
+                print("I don't even know why you did that, maybe you knew it would be a combat encounter?")
+                fight = combat(rockguy, player)
+                player = fight[1]
+                if fight[0] == "WIN":
+                    print("The giant rock gives you a big rock!")
+                    if "tree" in player["battles"]:
+                        print("What's with animate-inanimate objects and giving you parts of themselves?")
+                    player["inventory"]["big rock"] = player["usable items"]["big rock"]
+                    player["Collected items"]["big rock"] = player["usable items"]["big rock"]
+            else:
+                print("The rock hast already been kicked... the creator says you're not allowed to try winning against it twice...")
+        elif choice == 1:
+            print("You find that the heat of the lava makes for a pretty good source of heat and take nap.")
+            print("Although the lack of cushioning in there makes it hard to actually sleep.")
+        elif choice == 3:
+            print("You walk back on the path to the darker area of the cave.")
+            cave(player)
 
 def tun_fight(playerchar, tunlytun):
     # add some sleep statements around here
@@ -510,7 +587,7 @@ def chem_t(player):
             print("you survived!")
             history_t(player)
 
-def history_t():
+def history_t(player):
     questions = 75
     playerupdate = playerregen(player)
     player = playerupdate()
@@ -648,7 +725,7 @@ def combat(enemy, player):
 
         print(f"Your lucidity increased by {damage}!!")
 
-def RW_route_parents():
+def RW_route_parents(player):
     parents = [10, ["flavor text list"]]
     evidencegauge = 0
     arguloss = 0
@@ -773,7 +850,7 @@ def RW_items(queleft, player):
             else:
                 print("That's not an option :(")
                 continue
-        except ValueError:
+        except:
             continue
 
     inventorylist = list(player["inventory"].keys())
@@ -978,14 +1055,22 @@ def completion():
             print("What? Can you say that again? I don't think that was the letter Y OR N...")
 
 def intro():
+    count = 0
     print("Hello, this is a TBAG--Text Based Adventure Game. (insert better intro text here)")
     while True:
-        start = input("Would you like to play?(Y/N):\n")
+        if count < 10:
+            start = input("Would you like to play?(Y/N):\n")
+        elif count > 10:
+            start = input("CHOOSE A VALID OPTION ALREADY PLEASE!:\n")
+            if count > 30:
+                print("Right so you didn't choose for too many times so I'm just going to terminate the program for you.")
+                sys.exit()
         if start == "Y":
             startup_room()
         elif start == "N":
             sys.exit()
         else:
+            count += 1
             continue
 
 def inputchecker(rangeofchoices):
@@ -998,7 +1083,7 @@ def inputchecker(rangeofchoices):
                 else:
                     print("That's not an option :(")
                     continue
-            except ValueError:
+            except:
                     continue
             
     return choicevar

@@ -9,9 +9,10 @@ def startup_room():
     print("You should wake up!\nNo! You should keep sleeping, just a bit longer!")
 
     if wrldr == False:
-        wrldr = input("Will you\n1) wake up\nor\n2) keep sleeping?(1/2)")
+        print("1) wake up\n2) keep sleeping?(1/2)")
+        wrldr = inputchecker(2)
 
-    if wrldr == "1":
+    if wrldr == 1:
         player = {"state":{"alive":True},
                   "stats":{"sleepiness":0, "adrenaline":10, "memory":10},
                   "statmax":{"sleepiness":50, "adrenaline":10, "memory":10},
@@ -19,14 +20,14 @@ def startup_room():
                   "collected items":{},
                   "usable items":{"coffee":"decreases sleepiness by 10", "cheat sheet":"when you use the cheat sheet you answer a random amount of questions with a random chance of getting caught-losing the battle",
                                   "energy drink":"gives you 2 adrenaline and -15 sleepiness", "candy bag":"gives you 3 memory", "burrito":"decreases sleep by 10 and increases adrenaline by 3"},
-                  "skills":{"slap":"Costs 2 adrenaline, but heals 20 sleepiness."},
-                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 15 questions", "save the hardest for last":"costs 2 adrenaline, you do 5 questions", "guess":"costs 2 adrenaline, answer 3 questions, gain reduced sleep."},
+                  "skills":{"slap":"Costs 2 adrenaline, but heals 15 sleepiness."},
+                  "unacquired skills":{"random recollection":"costs 5 adrenaline, you do 15 questions", "save the hardest for last":"costs 2 adrenaline, you do 5 questions", "guess":"costs 2 adrenaline, answer 3 questions, heal 5 sleep."},
                   }
 
-        winlossrealworld= tun_fight(player, tun)
+        winlossrealworld = tun_fight(player, tun)
         winlossrealworld = winlossrealworld[1]
         winlossdreamworld = False
-    elif wrldr == "2":
+    elif wrldr == 2:
         player = {"state":{"alive":True},
                   "stats":{"lucidity":0, "social battery":10},
                   "statmax":{"lucidity":50, "social battery":10},
@@ -35,7 +36,7 @@ def startup_room():
                   "Collected items":{},
                   "usable items":{"sleep tea":"decreases lucidity by 10", "big rock":"-20 lucidity",
                                   "frying pan":"You make yourself eggs--you recharge 5 social batter", "PSPC":"recharge 10 social batter"},
-                  "skills":{"pretend nap":"You pretend to sleep! Keeping up the fascade costs 2 social battery but you lose 25 lucidity!"},
+                  "skills":{"pretend nap":"You pretend to sleep! Keeping up the fascade costs 2 social battery but you lose 15 lucidity!"},
                   "unacquired skills":{"dramatic lie":"costs 10 social battery and does 30 charm", "puppy dog eyes":"Costs 2 social batter, does 7 charm", "disassociate":"gain 3 social battery, skip a turn"}, 
                   "battles":[]
                   }
@@ -477,12 +478,18 @@ def tun_fight(playerchar, tunlytun):
         while True:
             turnchoice = input("Would you like to\n1) Recall\n2) Skills\n3) Items:\n")
             if turnchoice == "1":
-                print("You tried to remember something you forgot!")
-                playerchar["stats"]["memory"] = playerchar["stats"]["memory"]-1
-                break
+                if playerchar["stats"]["memory"] > 0:
+                    print("You tried to remember something you forgot!")
+                    playerchar["stats"]["memory"] = playerchar["stats"]["memory"]-1
+                    break
+                else:
+                    print("You don't have enough memory!")
             elif turnchoice == "2":
-                print("You actually don't have any skills yet :P")
-                break
+                if playerchar["stats"]["adrenaline"] >= 2:
+                    RW_skills(0, playerchar)
+                    break
+                else:
+                    print("You don't even have enough adrenaline to use a single skill try something else!")
             elif turnchoice == "3":
                 print("You don't have any items, sorry XD")
                 break
@@ -510,6 +517,13 @@ def math_t(player):
     panic = 0
     panicchance = [1 , 0 , 0 , 0 , 0]
     player = playerregen(player)
+    print("Listen up! Today I will hand out your math tests!")
+    print("That means that you must NOT use cheat, speak or peak!")
+    time.sleep(1.5)
+    print("Understood?!?")
+    time.sleep(.75)
+    print("\nYeah, sure.\n ")
+    time.sleep(.5)
     print("Alright, I'll hand out your tests now!")
     while True:
         
@@ -543,15 +557,15 @@ def math_t(player):
             print(f"You have {player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness")
 
         print("You gained 5 sleepiness!")
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 5
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] + 5
 
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
                 math_t(player)
-            if questions <= 0:
-                print("you survived!")
-                chem_t(player)
+        if questions <= 0:
+            print("you survived!")
+            chem_t(player)
 
 def chem_t(player):
     questions = 35
@@ -577,7 +591,7 @@ def chem_t(player):
             player = update[1]
 
         print("You gained 10 sleepiness!")
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] + 10
 
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
@@ -619,16 +633,16 @@ def history_t(player):
             panic = panic - 1
             print(f"You have {player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness")
 
-        print("You gained 15 sleepiness!")
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
+        print("You gained 20 sleepiness!")
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] + 20
 
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
                 math_t(player)
-            if questions <= 0:
-                print("you survived!")
-                RW_route_parents(player)
+        if questions <= 0:
+            print("you survived!")
+            RW_route_parents(player)
 
 def nan_fight(playerchar, nanlynan):
     charmcount = 0
@@ -659,9 +673,15 @@ def nan_fight(playerchar, nanlynan):
             charmcount += playerchar["miscish stats"]["charm"]
             print(f"You did {playerchar["miscish stats"]["charm"]} charm!")
         elif turnchoice == "2":
-            print("You don't have ANY social skills yet, you better train them soon!")
+            if "disassociate" in playerchar["skills"] or playerchar["stats"]["social battery"] >= 2:
+                DW_skills(charmcount, playerchar)
+                break
+            else:
+                print("You don't even have enough adrenaline to use a single skill try something else!")
         elif turnchoice == "3":
             print("You don't have any items... hmm maybe you could convince someone to give you one?")
+            time.sleep(2)
+            print("Not Nan or Tun though, the creator was too lazy to give them item drops...")
         
         direction = random.randint(1, 2)
         change = random.randint(0, 5)
@@ -697,19 +717,26 @@ def combat(enemy, player):
             return "WIN", player
             
         if disassociate <= 0:
-            print("Would you like to:\n1) Charm\n2) Use Skills\n3) Use Items")
-            turnch = inputchecker(3)
-            if turnch == 1:
-                print("You used your Charm on the enemy!")
-                charmcount += player["miscish stats"]["charm"]
-            elif turnch == 2:
-                skilly = DW_skills(charmcount, player)
-                charmcount = skilly[0]
-                player = skilly[1]
-                disassociate = skilly[2]
-            elif turnch == 3:
-                itemmy = DW_items(player)
-                player = itemmy
+            while True:
+                print("Would you like to:\n1) Charm\n2) Use Skills\n3) Use Items")
+                turnch = inputchecker(3)
+                if turnch == 1:
+                    print("You used your Charm on the enemy!")
+                    charmcount += player["miscish stats"]["charm"]
+                    break
+                elif turnch == 2:
+                    if "disassociate" in player["skills"] or player["stats"]["social battery"] >= 2:
+                        skilly = DW_skills(charmcount, player)
+                        charmcount = skilly[0]
+                        player = skilly[1]
+                        disassociate = skilly[2]
+                        break
+                    else:
+                        print("You don't even have enough adrenaline to use a single skill try something else!")
+                elif turnch == 3:
+                    if player["inventory"]:
+                        itemmy = DW_items(player)
+                        player = itemmy
         else:
             print("You're still disassociating!")
         
@@ -721,7 +748,7 @@ def combat(enemy, player):
         elif direction == 2:
             damage = enemy[1] - change
 
-        print(random.choice(enemy[2]))
+        textrand(enemy[2])
 
         print(f"Your lucidity increased by {damage}!!")
 
@@ -841,17 +868,7 @@ def RW_items(queleft, player):
         print(f"{count}) {specitem} : {player["inventory"][specitem]}")
         count += 1
 
-    while True:
-        itemch = input(f"What item would you like to choose? 1~{count}:\n")
-        try:
-            itemch = int(itemch)
-            if itemch in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except:
-            continue
+    itemch = inputchecker(count-1)
 
     inventorylist = list(player["inventory"].keys())
     item = inventorylist[itemch]
@@ -904,17 +921,7 @@ def DW_items(player):
         print(f"{count}) {specitem} : {player["inventory"][specitem]}")
         count += 1
 
-    while True:
-        itemch = input(f"What item would you like to choose? 1~{count}:\n")
-        try:
-            itemch = int(itemch)
-            if itemch in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            continue
+    itemch = inputchecker(count-1)
 
     inventorylist = list(player["inventory"].keys())
     item = inventorylist[itemch]
@@ -951,20 +958,10 @@ def RW_skills(queleft, player):
         print(f"{count}) {specskill} : {player["skills"][specskill]}")
         count += 1
 
-    while True:
-        sklcho = input(f"What skill would you like to choose? 1~{count-1}:\n")
-        try:
-            sklcho = int(sklcho)
-            if sklcho in range(1, count):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            continue
+    sklcho = inputchecker(count-1)
 
     skilllist = list(player["skills"].keys())
-    skill = skilllist[sklcho]
+    skill = skilllist[sklcho-1]
 
     if skill == "random recollection" and player["stats"]["adrenaline"] >= 5:
         player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 5
@@ -975,7 +972,12 @@ def RW_skills(queleft, player):
     elif skill == "guess" and player["stats"]["adrenaline"] >= 2:
         player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 1
         queleft = queleft - 1
-        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 10
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 5
+        if player["stats"]["sleepiness"] < 0:
+            player["stats"]["sleepiness"] = 0
+    elif skill == "slap" and player["stats"]["adrenaline"] >= 2:
+        player["stats"]["adrenaline"] = player["stats"]["adrenaline"] - 2
+        player["stats"]["sleepiness"] = player["stats"]["sleepiness"] - 15
         if player["stats"]["sleepiness"] < 0:
             player["stats"]["sleepiness"] = 0
         
@@ -990,21 +992,10 @@ def DW_skills(charmco, player):
         print(f"{count}) {specskill} : {player["skills"][specskill]}")
         count += 1
 
-    while True:
-        sklcho = input(f"What skill would you like to choose? 1~{count}:\n")
-        try:
-            sklcho = int(sklcho)
-            if sklcho in range(1, count+1):
-                break
-            else:
-                print("That's not an option :(")
-                continue
-        except ValueError:
-            print("That's not a number according to Python-sama, Sorry!")
-            continue
+    sklcho = inputchecker(count-1)
 
     skilllist = list(player["skills"].keys())
-    skill = skilllist[sklcho]
+    skill = skilllist[sklcho-1]
 
     if skill == "dramatic lie" and player["stats"]["social battery"] >= 10:
         player["stats"]["social battery"] = player["stats"]["social battery"] - 10
@@ -1017,6 +1008,11 @@ def DW_skills(charmco, player):
         player["stats"]["social battery"] = player["stats"]["social battery"] + 3
         if player["stats"]["social battery"] < player["statmax"]["social battery"]:
             player["stats"]["social battery"] = player["statmax"]["social battery"]
+    elif skill == "pretend nap" and player["stats"]["social battery"] >= 2:
+        player["stats"]["social battery"] = player["stats"]["social battery"] - 2
+        player["stats"]["lucidity"] = player["stats"]["lucidity"] - 15
+        if player["stats"]["lucidity"] < 0:
+            player["stats"]["lucidity"] = 0
     
     return charmco, player, dissassociate
 
@@ -1087,5 +1083,8 @@ def inputchecker(rangeofchoices):
                     continue
             
     return choicevar
+
+def textrand(textlist):
+    print(random.choice(textlist))
 
 intro()

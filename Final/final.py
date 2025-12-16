@@ -376,7 +376,7 @@ def cellar(player):
 
 def cave(player):
     print("It's really really really dark... One might say you could describe it as 'dark, darker yet darker")
-    bat = ["bat", 15, ["Wow! so flavor", "text two", "even more flavor"], 125]
+    bat = ["bat", 10, ["Wow! so flavor", "text two", "even more flavor"], 100]
     wisp = ["wisp", 20, ["Wow! so flavor", "text two", "even more flavor"], 150]
     while True:
         print("1) Try to stumble further into the cave  \n2) Go into the glowing chamber of light you see a ways away \n3) Go back into the light.\n4) let out an earpeircing scream")
@@ -675,6 +675,8 @@ def nan_fight(playerchar, nanlynan):
     
         if charmcount >= nanlynan[1]:
             print("You won!")
+            print("Your Charn increased by 5!")
+            playerchar["miscish stats"]["charm"] = playerchar["miscish stats"]["charm"] + 5
             update = playerregen(playerchar)
             playerchar = update
             return playerchar, True

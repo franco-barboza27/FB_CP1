@@ -1,7 +1,7 @@
 import time, sys, random
 
 def startup_room():
-    tun = [5, 10, ["sample 1", "sample 2", "sample 3", "sample 4", "sample 5"]]
+    tun = [5, 15, ["sample 1", "sample 2", "sample 3", "sample 4", "sample 5"]]
     nan = [5, 50, ["sample 1", "sample 2", "sample 3", "sample 4", "sample 5"]]
 
     wrldr = False
@@ -30,7 +30,7 @@ def startup_room():
     elif wrldr == 2:
         player = {"state":{"alive":True},
                   "stats":{"lucidity":0, "social battery":10},
-                  "statmax":{"lucidity":50, "social battery":10},
+                  "statmax":{"lucidity":100, "social battery":10},
                   "miscish stats":{"charm":5, "imagination":0},
                   "inventory":{},
                   "Collected items":{},
@@ -459,6 +459,10 @@ def deeper_cave(player):
 def tun_fight(playerchar, tunlytun):
     # add some sleep statements around here
     turn = 0
+    print("You realize you should be able to use your Memory, your skills and items do a variety of things!")
+    print("Your goal is to NOT fall asleep, which means DONT let your sleepiness reach its maximum!")
+    print("Your MEMORY is used to RECALL information, in a battle like this one though, just try to hold out as long as POSSIBLE!")
+    print("Items and skills do various things but ITEMS only require that you HAVE them and that are one time use.\nSKILLS however, can be used as long as you have them and have enough ADRENALINE to use them.")
 
     while True:
         if playerchar["stats"]["sleepiness"] >= playerchar["statmax"]["sleepiness"]:
@@ -475,8 +479,7 @@ def tun_fight(playerchar, tunlytun):
             playerchar = update
             return playerchar, True
 
-        print("This is your chance to show what you can do!") # lowkey make a flavor text randomizer here pls
-        print("You will be able to use your Memory to 'recall'-- your skills and items do a variety of things!")
+        print(random.choice([""])) # lowkey make a flavor text randomizer here pl
         print(f"You currently have:")
         print(f"Sleepiness:{playerchar["stats"]["sleepiness"]}/{playerchar["statmax"]["sleepiness"]}\nAdrenaline:{playerchar["stats"]["adrenaline"]}/{playerchar["statmax"]["adrenaline"]}\nMemory:{playerchar["stats"]["memory"]}/{playerchar["statmax"]["memory"]}")
         while True:
@@ -521,6 +524,7 @@ def math_t(player):
     panic = 0
     panicchance = [1 , 0 , 0 , 0 , 0]
     player = playerregen(player)
+    invsave = player["inventory"]
     print("Listen up! Today I will hand out your math tests!")
     print("That means that you must NOT use cheat, speak or peak!")
     time.sleep(1.5)
@@ -535,22 +539,27 @@ def math_t(player):
             print(f"You have:\n{questions} questions left\n{player["stats"]["memory"]}/{player["statmax"]["memory"]} memory\n{player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness\n{player["stats"]["adrenaline"]}/{player["statmax"]["adrenaline"]} adrenaline")
 
             print("what will you do?\n1) answer questions\n2)use a skill\n3) use an item?:\n")
-            turnch = inputchecker(3)
-
-            if turnch == 1:
-                if player["stats"]["memory"] > 0:
-                    questions = questions - 3
-                    player["stats"]["memory"] = player["stats"]["memory"] - 1
-                else:
-                    print("You can't remember it right now!")
-            elif turnch == 2:
-                update = RW_skills(questions, player)
-                questions = update[0]
-                player = update[1]
-            elif turnch == 3:
-                item = RW_items(questions, player)
-                questions = item[0]
-                player = item[1]
+            while True:
+                turnch = inputchecker(3)
+                if turnch == 1:
+                    if player["stats"]["memory"] > 0:
+                        questions = questions - 3
+                        player["stats"]["memory"] = player["stats"]["memory"] - 1
+                        break
+                    else:
+                        print("You can't remember it right now!")
+                elif turnch == 2:
+                    if player["stats"]["adrenaline"] >= 2:
+                        update = RW_skills(questions, player)
+                        questions = update[0]
+                        player = update[1]
+                        break
+                elif turnch == 3:
+                    if player["inventory"]:
+                        item = RW_items(questions, player)
+                        questions = item[0]
+                        player = item[1]
+                        break
             
             panicquestion = random.choice(panicchance)
             
@@ -558,6 +567,7 @@ def math_t(player):
                 panic = random.randint(1, 3)
         else:
             panic = panic - 1
+            print("You panicked!\nIt wore you out so you had a bit!")
             print(f"You have {player["stats"]["sleepiness"]}/{player["statmax"]["sleepiness"]} sleepiness")
 
         print("You gained 5 sleepiness!")
@@ -566,6 +576,7 @@ def math_t(player):
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
+                player["inventory"] = invsave
                 math_t(player)
         if questions <= 0:
             print("you survived!")
@@ -573,6 +584,7 @@ def math_t(player):
 
 def chem_t(player):
     questions = 30
+    invsave = player["inventory"]
     playerupdate = playerregen(player)
     player = playerupdate
     print("Alright class! Backpacks to the front!\n Time for the chem test I guess...")
@@ -602,13 +614,15 @@ def chem_t(player):
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
+                player["inventory"] = invsave
                 chem_t(player)
         if questions <= 0:
             print("you survived!")
             history_t(player)
 
 def history_t(player):
-    questions = 75
+    questions = 50
+    invsave = player["inventory"]
     playerupdate = playerregen(player)
     player = playerupdate
     print("Open up your laptops gang!\n The code is kjrepsdjfgvvcLFJA")
@@ -642,6 +656,7 @@ def history_t(player):
         if player["stats"]["sleepiness"] >= player["statmax"]["sleepiness"]:
             contq = cont()
             if contq == True:
+                player["inventory"] = invsave
                 history_t(player)
         if questions <= 0:
             print("you survived!")
@@ -720,6 +735,7 @@ def combat(enemy, player):
                 player = playerupdate
                 player["miscish stats"]["imagination"] = player["miscish stats"]["imagination"] - 3
             return "WIN", player
+        
             
         print(f"The charm gauge is currently at {charmcount}/{enemy[1]}!")
         print(f"You currently have:")
